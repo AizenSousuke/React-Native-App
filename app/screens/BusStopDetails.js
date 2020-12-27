@@ -1,13 +1,15 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import BusStop from '../components/BusStop'
+import React from "react";
+import { View, Text } from "react-native";
+import BusStop from "../components/BusStop";
+import styles from "../../assets/css/AppStyles";
 
 const BusStopDetails = () => {
-    return (
-        <View>
-            <BusStop />
-        </View>
-    )
-}
+	return (
+		<View>
+			<Text style={styles.busStopDetails}>Bus Stop Details</Text>
+			<BusStop />
+		</View>
+	);
+};
 
-export default BusStopDetails
+export default BusStopDetails;

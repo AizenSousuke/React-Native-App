@@ -5,14 +5,10 @@ import styles from "../../assets/css/AppStyles";
 const BusDetails = ({ busNumber }) => {
 	return (
 		<View style={styles.busDetails}>
-			<View style={styles.busDetails}>
-				{busNumber}
-			</View>
-			<View style={styles.busDetails}>
-				<View style={styles.busTiming}>5 min</View>
-				<View style={styles.busTiming}>10 min</View>
-				<View style={styles.busTiming}>16 min</View>
-			</View>
+			<Text style={styles.busTiming}>{busNumber}</Text>
+			<Text style={styles.busTiming}>5 min</Text>
+			<Text style={styles.busTiming}>15 min</Text>
+			<Text style={styles.busTiming}>25 min</Text>
 		</View>
 	);
 };

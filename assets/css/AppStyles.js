@@ -76,9 +76,9 @@ export default StyleSheet.create({
 	},
 	busDetails: {
 		flexDirection: "row",
-		padding: 3,
 	},
 	busTiming: {
 		paddingRight: 5,
+		color: "white",
 	}
 });

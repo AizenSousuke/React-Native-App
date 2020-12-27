@@ -27,8 +27,7 @@ export default function WelcomeScreen() {
 				/>
 				<Text style={styles.headerText}>Yet Another SG Bus App</Text>
 			</View>
-			<View style={styles.busStopDetails}>
-				<Text style={styles.busStopDetails}>Bus Stop Details</Text>
+			<View>
 				<BusStopDetails />
 			</View>
 			<View style={styles.loginButton}>
