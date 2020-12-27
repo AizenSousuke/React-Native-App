@@ -10,6 +10,7 @@ import {
 	SafeAreaView,
 } from "react-native";
 import styles from "../../assets/css/AppStyles";
+import BusStopDetails from "./BusStopDetails";
 
 export default function WelcomeScreen() {
 	return (
@@ -26,7 +27,10 @@ export default function WelcomeScreen() {
 				/>
 				<Text style={styles.headerText}>Yet Another SG Bus App</Text>
 			</View>
-
+			<View style={styles.busStopDetails}>
+				<Text style={styles.busStopDetails}>Bus Stop Details</Text>
+				<BusStopDetails />
+			</View>
 			<View style={styles.loginButton}>
 				<Text style={[styles.text, styles.textUppercase]}>Login</Text>
 			</View>

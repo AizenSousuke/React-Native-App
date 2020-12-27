@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar } from "react-native";
+import { StyleSheet, StatusBar, Platform } from "react-native";
 
 export default StyleSheet.create({
 	background: {
@@ -68,4 +68,17 @@ export default StyleSheet.create({
 		textTransform: "uppercase",
 		letterSpacing: 3,
 	},
+	busStopDetails: {
+		color: "white",
+		textShadowColor: "white",
+		textShadowRadius: 10,
+		textShadowOffset: { height: 1, width: 1 },
+	},
+	busDetails: {
+		flexDirection: "row",
+		padding: 3,
+	},
+	busTiming: {
+		paddingRight: 5,
+	}
 });
