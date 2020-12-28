@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button } from "react-native";
 import BusDetails from "./BusDetails";
 import styles from "../../assets/css/AppStyles";
+import { getBusArrival } from "../api/api";
 
-const BusStop = () => {
+const BusStop = ({ code }) => {
+	const [busStopData, setBusStopData] = useState(0);
+
+	useEffect(() => {
+		getBusArrival(code).then((res) => {
+			setBusStopData(res);
+			// console.log("Effect res: " + JSON.stringify(res));
+		});
+	}, []);
+
 	return (
-		<View>
+		<View style={styles.busStop}>
 			<View style={{ flexDirection: "row" }}>
 				<Text style={styles.busStopDetails}>
-					Bus Stop: Pending Road
+					Bus Stop: {code ?? "No bus stop code set"}
 				</Text>
 				<Button title={"Refresh"}></Button>
 			</View>
-			<BusDetails busNumber={966} />
-			<BusDetails busNumber={960} />
-			<BusDetails busNumber={911} />
-			<BusDetails busNumber={913} />
-			<BusDetails busNumber={963} />
+			{busStopData.Services?.map((service, key) => {
+				return <>
+					<BusDetails key={key} busNumber={service.ServiceNo} />
+				</>
+			})}
 		</View>
 	);
 };

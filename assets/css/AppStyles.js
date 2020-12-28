@@ -68,6 +68,9 @@ export default StyleSheet.create({
 		textTransform: "uppercase",
 		letterSpacing: 3,
 	},
+	busStop: {
+		paddingBottom: 10,
+	},
 	busStopDetails: {
 		paddingRight: 10,
 		color: "white",
