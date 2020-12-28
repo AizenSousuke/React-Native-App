@@ -69,6 +69,7 @@ export default StyleSheet.create({
 		letterSpacing: 3,
 	},
 	busStopDetails: {
+		paddingRight: 10,
 		color: "white",
 		textShadowColor: "white",
 		textShadowRadius: 10,
