@@ -23,9 +23,7 @@ const BusStop = ({ code }) => {
 				<Button title={"Refresh"}></Button>
 			</View>
 			{busStopData.Services?.map((service, key) => {
-				return <>
-					<BusDetails key={key} busNumber={service.ServiceNo} />
-				</>
+				return <BusDetails key={key} busNumber={service.ServiceNo} />;
 			})}
 		</View>
 	);

@@ -83,6 +83,6 @@ export default StyleSheet.create({
 	},
 	busTiming: {
 		paddingRight: 5,
-		color: "white",
+		color: "black",
 	}
 });
