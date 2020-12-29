@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-	View,
-	Text,
-	Image,
-	ImageBackground,
-	StyleSheet,
-	Button,
-	ScrollView,
-	SafeAreaView,
-} from "react-native";
-import { Header, ListItem, SearchBar } from "react-native-elements";
+import { View } from "react-native";
+import { Header, ListItem, SearchBar, Text } from "react-native-elements";
 import styles from "../../assets/css/AppStyles";
 import { getBusArrival } from "../api/api";
 import BusDetails from "../components/BusDetails";
@@ -20,15 +11,17 @@ export default function Home() {
 
 	useEffect(() => {
 		console.log(search);
-		getBusArrival(search)
-			.then((res) => {
-				console.log(res.services);
-				setBusService(res.Services);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+		if (search.length >= 5) {
+			getBusArrival(search)
+				.then((res) => {
+					console.log(res.services);
+					setBusService(res.Services);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}, [search]);
 
 	return (
 		<View>
@@ -46,16 +39,30 @@ export default function Home() {
 					updateSearch(value);
 				}}
 				value={search.toString()}
+				showLoading
 			/>
 			{/* <Text>{JSON.stringify(busService)}</Text> */}
-			{busService.map((service, key) => {
-				console.log("Service No: " + service.ServiceNo);
-				return (
-					<ListItem key={key}>
-						<BusDetails busNumber={service.ServiceNo} />
-					</ListItem>
-				);
-			})}
+			{busService.length > 0 ? (
+				busService.map((service, key) => {
+					console.log("Service No: " + service.ServiceNo);
+					return (
+						<ListItem key={key} bottomDivider>
+							<ListItem.Content>
+								<ListItem.Title h4>
+									{service.ServiceNo}
+								</ListItem.Title>
+								<ListItem.Subtitle>
+									<BusDetails busNumber={service.ServiceNo} />
+								</ListItem.Subtitle>
+							</ListItem.Content>
+						</ListItem>
+					);
+				})
+			) : (
+				<ListItem bottomDivider>
+					<Text h3>No results</Text>
+				</ListItem>
+			)}
 		</View>
 	);
 }
