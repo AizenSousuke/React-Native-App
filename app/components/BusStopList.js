@@ -10,7 +10,7 @@ const BusStopList = ({ name, address, code }) => {
 			<ListItem.Content>
 				<ListItem.Title>{name ?? "Bus Stop Name"}</ListItem.Title>
 				<ListItem.Subtitle>
-					{address ?? "Address"} {code ?? "Bus Stop Code"}
+					{address ?? "Address"} ({code ?? "Bus Stop Code"})
 				</ListItem.Subtitle>
 			</ListItem.Content>
 			<Pressable

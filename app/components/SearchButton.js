@@ -6,7 +6,9 @@ const SearchButton = ({ onPress }) => {
 	return (
 		<ActionButton
 			offsetY={100}
-			renderIcon={() => {return <Icon name="gps-fixed" color={"white"} />}}
+			renderIcon={() => {
+				return <Icon name="gps-fixed" color={"white"} />;
+			}}
 			onPress={onPress}
 		/>
 	);
