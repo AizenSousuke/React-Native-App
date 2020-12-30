@@ -1,19 +1,25 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
-import BusStopDetails from "../screens/BusStopDetails";
-import { View } from "react-native";
-import { Text } from "react-native";
 import { Icon } from "react-native-elements";
+import GoingOut from "../screens/GoingOut";
+import SearchButton from "./SearchButton";
 
 const Tab = createBottomTabNavigator();
 
 function TabNavigator() {
 	return (
-		<Tab.Navigator initialRouteName={"Home"}>
+		<Tab.Navigator
+			initialRouteName={"Home"}
+			tabBarOptions={{
+                style: { minHeight: 70 },
+                activeTintColor: "black",
+				activeBackgroundColor: "#b7b7b7",
+			}}
+		>
 			<Tab.Screen
 				name="Going Out"
-				component={Home}
+				component={GoingOut}
 				options={{
 					tabBarIcon: () => {
 						return <Icon name="directions-run" />;
@@ -22,7 +28,7 @@ function TabNavigator() {
 			></Tab.Screen>
 			<Tab.Screen
 				name="Going Home"
-				component={BusStopDetails}
+				component={Home}
 				options={{
 					tabBarIcon: () => {
 						return <Icon name="home" />;

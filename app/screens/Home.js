@@ -25,13 +25,6 @@ export default function Home() {
 
 	return (
 			<View>
-				<Header
-					placement={"center"}
-					centerComponent={{
-						text: "Yet Another SG Bus App",
-						style: { color: "white", fontSize: 18 },
-					}}
-				/>
 				<SearchBar
 					placeholder={"Search for a bus stop"}
 					onChangeText={(value) => {
