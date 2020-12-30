@@ -1,14 +1,11 @@
 import React from "react";
 import { View, Text } from "react-native";
-import SearchButton from "../components/SearchButton";
+import BusStopList from "../components/BusStopList";
 
 const GoingOut = () => {
 	return (
-		// <View style={{ flex: 1 }}>
-        //     <SearchButton />
-		// </View>
         <View>
-
+            <BusStopList />
         </View>
 	);
 };
