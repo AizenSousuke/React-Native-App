@@ -24,45 +24,51 @@ export default function Home() {
 	}, [search]);
 
 	return (
-		<View>
-			<Header
-				placement={"center"}
-				centerComponent={{
-					text: "Yet Another SG Bus App",
-					style: { color: "white", fontSize: 18 },
-				}}
-			/>
-			<SearchBar
-				placeholder={"Search for a bus stop"}
-				onChangeText={(value) => {
-					console.log("Value: " + value);
-					updateSearch(value);
-				}}
-				value={search.toString()}
-				showLoading
-			/>
-			{/* <Text>{JSON.stringify(busService)}</Text> */}
-			{busService.length > 0 ? (
-				busService.map((service, key) => {
-					console.log("Service No: " + service.ServiceNo);
-					return (
-						<ListItem key={key} bottomDivider>
-							<ListItem.Content>
-								<ListItem.Title h4>
-									{service.ServiceNo}
-								</ListItem.Title>
-								<ListItem.Subtitle>
-									<BusDetails busNumber={service.ServiceNo} />
-								</ListItem.Subtitle>
-							</ListItem.Content>
-						</ListItem>
-					);
-				})
-			) : (
-				<ListItem bottomDivider>
-					<Text h3>No results</Text>
-				</ListItem>
-			)}
-		</View>
+			<View>
+				<Header
+					placement={"center"}
+					centerComponent={{
+						text: "Yet Another SG Bus App",
+						style: { color: "white", fontSize: 18 },
+					}}
+				/>
+				<SearchBar
+					placeholder={"Search for a bus stop"}
+					onChangeText={(value) => {
+						console.log("Value: " + value);
+						updateSearch(value);
+					}}
+					value={search.toString()}
+					showLoading
+				/>
+				{/* <Text>{JSON.stringify(busService)}</Text> */}
+				{busService.length > 0 ? (
+					busService.map((service, key) => {
+						console.log("Service No: " + service.ServiceNo);
+						return (
+							<ListItem key={key} bottomDivider>
+								<ListItem.Content>
+									<ListItem.Title h4>
+										{service.ServiceNo}
+									</ListItem.Title>
+									<ListItem.Subtitle>
+										<BusDetails
+											busNumber={service.ServiceNo}
+										/>
+									</ListItem.Subtitle>
+								</ListItem.Content>
+							</ListItem>
+						);
+					})
+				) : (
+					<ListItem bottomDivider>
+						<View style={{ flex: 0.5 }}></View>
+						<View style={{ flex: 1 }}>
+							<Text h3>No results</Text>
+						</View>
+						<View style={{ flex: 0.5 }}></View>
+					</ListItem>
+				)}
+			</View>
 	);
 }
