@@ -13,38 +13,37 @@ const Search = () => {
 
 	useEffect(() => {
 		console.log(search);
-		// if (search.length >= 5) {
-		// 	getBusArrival(search)
-		// 		.then((res) => {
-		// 			console.log(res.services);
-		// 			setBusService(res.Services);
-		// 		})
-		// 		.catch((error) => {
-		// 			console.log(error);
-		// 		});
-		// }
-
 		// Search for bus stops
 		if (search.length >= 3) {
-			getBusStops()
-				.then((res) => {
-					var arrayOfBusStops = [];
-					res.value.forEach((x) => {
-						if (
-							x.BusStopCode.toLowerCase().includes(search) ||
-							x.RoadName.toLowerCase().includes(search) ||
-							x.Description.toLowerCase().includes(search)
-						) {
-							console.log("Includes: " + x.Description);
-							arrayOfBusStops.push(x);
-							console.log(arrayOfBusStops.length);
-						}
+            var arrayOfBusStops = [];
+			for (var pageSearched = 0; pageSearched < 5; pageSearched++) {
+				// console.log("Page searched: " + pageSearched);
+				getBusStops(pageSearched)
+					.then((res) => {
+						res.value.forEach((busstop) => {
+							if (
+								busstop.BusStopCode.toLowerCase().includes(
+									search
+								) ||
+								busstop.RoadName.toLowerCase().includes(
+									search
+								) ||
+								busstop.Description.toLowerCase().includes(
+									search
+								)
+							) {
+								// console.log("Includes: " + busstop.Description);
+								arrayOfBusStops.push(busstop);
+								// console.log(arrayOfBusStops.length);
+							}
+                        });
+                        
+                        setbusStops(arrayOfBusStops);
+					})
+					.catch((error) => {
+						console.log(error);
 					});
-					setbusStops(arrayOfBusStops);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			}
 		}
 	}, [search]);
 
@@ -77,11 +76,11 @@ const Search = () => {
 					})
 				) : (
 					<ListItem bottomDivider>
-						<View style={{ flex: 0.5 }}></View>
-						<View style={{ flex: 1 }}>
-							<Text h3>No results</Text>
-						</View>
-						<View style={{ flex: 0.5 }}></View>
+						<ListItem.Content>
+							<ListItem.Title h4 style={{ textAlign: "center" }}>
+								No results
+							</ListItem.Title>
+						</ListItem.Content>
 					</ListItem>
 				)}
 			</ScrollView>

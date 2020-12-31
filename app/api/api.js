@@ -26,10 +26,13 @@ export const getBusArrival = async (code, serviceNumber = null) => {
 	return data;
 };
 
-export const getBusStops = async () => {
+export const getBusStops = async (skip = null) => {
 	var data = await axios
 		.get(BusStopsURL, {
-			headers: header,
+            headers: header,
+            params: {
+                $skip: skip * 500
+            },
 		})
 		.then((res) => {
             // console.log(res.data);
