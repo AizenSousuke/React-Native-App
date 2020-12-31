@@ -4,21 +4,46 @@ import { View } from "react-native";
 import { Header } from "react-native-elements";
 import SearchButton from "./app/components/SearchButton";
 import TabNavigator from "./app/components/TabNavigator";
+import { createStackNavigator } from "@react-navigation/stack";
+import Search from "./app/screens/Search";
+
+const Stack = createStackNavigator();
+
+const Home = ({ navigation }) => {
+	return (
+		<View style={{ flex: 1 }}>
+			<Header
+				placement={"center"}
+				centerComponent={{
+					text: "Yet Another SG Bus App",
+					style: { color: "white", fontSize: 18 },
+				}}
+			/>
+			<TabNavigator />
+			<SearchButton
+				onPress={() => {
+					navigation.navigate("Search");
+				}}
+			/>
+		</View>
+	);
+};
 
 export default function App() {
 	return (
 		<NavigationContainer>
-			<View style={{ flex: 1 }}>
-				<Header
-					placement={"center"}
-					centerComponent={{
-						text: "Yet Another SG Bus App",
-						style: { color: "white", fontSize: 18 },
-					}}
+			<Stack.Navigator>
+				<Stack.Screen
+					name="Home"
+					component={Home}
+					options={{ headerShown: false }}
 				/>
-				<TabNavigator />
-			</View>
-			<SearchButton />
+				<Stack.Screen
+					name="Search"
+					component={Search}
+					options={{ headerShown: true }}
+				/>
+			</Stack.Navigator>
 		</NavigationContainer>
 	);
 }
