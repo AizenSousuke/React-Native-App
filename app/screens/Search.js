@@ -63,7 +63,7 @@ const Search = () => {
 									{stops.Description}
 								</ListItem.Title>
 								<ListItem.Subtitle>
-                                    
+                                    {stops.RoadName} ({stops.BusStopCode})
 								</ListItem.Subtitle>
 							</ListItem.Content>
 						</ListItem>
