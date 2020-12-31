@@ -15,7 +15,7 @@ const Search = () => {
 		console.log(search);
 		// Search for bus stops
 		if (search.length >= 3) {
-            var arrayOfBusStops = [];
+			var arrayOfBusStops = [];
 			for (var pageSearched = 0; pageSearched < 5; pageSearched++) {
 				// console.log("Page searched: " + pageSearched);
 				getBusStops(pageSearched)
@@ -36,9 +36,12 @@ const Search = () => {
 								arrayOfBusStops.push(busstop);
 								// console.log(arrayOfBusStops.length);
 							}
-                        });
-                        
-                        setbusStops(arrayOfBusStops);
+						});
+
+						setbusStops((busStops) => [
+							...busStops,
+							...arrayOfBusStops,
+						]);
 					})
 					.catch((error) => {
 						console.log(error);
