@@ -4,6 +4,7 @@ import { Header, ListItem, SearchBar } from "react-native-elements";
 import styles from "../../assets/css/AppStyles";
 import { getBusArrival, getBusStops } from "../api/api";
 import BusDetails from "../components/BusDetails";
+import { ScrollView } from "react-native-gesture-handler";
 
 const Search = () => {
 	const [search, updateSearch] = useState("");
@@ -29,10 +30,14 @@ const Search = () => {
 				.then((res) => {
 					var arrayOfBusStops = [];
 					res.value.forEach((x) => {
-						if (x.Description.toLowerCase().includes(search)) {
+						if (
+							x.BusStopCode.toLowerCase().includes(search) ||
+							x.RoadName.toLowerCase().includes(search) ||
+							x.Description.toLowerCase().includes(search)
+						) {
 							console.log("Includes: " + x.Description);
 							arrayOfBusStops.push(x);
-                            console.log(arrayOfBusStops.length);
+							console.log(arrayOfBusStops.length);
 						}
 					});
 					setbusStops(arrayOfBusStops);
@@ -54,30 +59,33 @@ const Search = () => {
 				value={search.toString()}
 				showLoading
 			/>
-			{busStops.length > 0 ? (
-				busStops.map((stops, key) => {
-					return (
-						<ListItem key={key} bottomDivider>
-							<ListItem.Content>
-								<ListItem.Title h4>
-									{stops.Description}
-								</ListItem.Title>
-								<ListItem.Subtitle>
-                                    {stops.RoadName} ({stops.BusStopCode})
-								</ListItem.Subtitle>
-							</ListItem.Content>
-						</ListItem>
-					);
-				})
-			) : (
-				<ListItem bottomDivider>
-					<View style={{ flex: 0.5 }}></View>
-					<View style={{ flex: 1 }}>
-						<Text h3>No results</Text>
-					</View>
-					<View style={{ flex: 0.5 }}></View>
-				</ListItem>
-			)}
+			<ScrollView>
+				{busStops.length > 0 ? (
+					busStops.map((stops, key) => {
+						return (
+							<ListItem key={key} bottomDivider>
+								<ListItem.Content>
+									<ListItem.Title h4>
+										{stops.Description}
+									</ListItem.Title>
+									<ListItem.Subtitle>
+										{stops.RoadName} ({stops.BusStopCode})
+									</ListItem.Subtitle>
+								</ListItem.Content>
+							</ListItem>
+						);
+					})
+				) : (
+					<ListItem bottomDivider>
+						<View style={{ flex: 0.5 }}></View>
+						<View style={{ flex: 1 }}>
+							<Text h3>No results</Text>
+						</View>
+						<View style={{ flex: 0.5 }}></View>
+					</ListItem>
+				)}
+			</ScrollView>
+
 			{/* {busService.length > 0 ? (
 				busService.map((service, key) => {
 					console.log("Service No: " + service.ServiceNo);
