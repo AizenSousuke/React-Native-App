@@ -15,6 +15,7 @@ const Search = () => {
 		console.log(search);
 		// Search for bus stops
 		if (search.length >= 3) {
+            setbusStops([]);
 			var arrayOfBusStops = [];
 			for (var pageSearched = 0; pageSearched < 5; pageSearched++) {
 				// console.log("Page searched: " + pageSearched);
@@ -34,14 +35,21 @@ const Search = () => {
 							) {
 								// console.log("Includes: " + busstop.Description);
 								arrayOfBusStops.push(busstop);
-								// console.log(arrayOfBusStops.length);
+								console.log(arrayOfBusStops.length);
 							}
 						});
 
-						setbusStops((busStops) => [
-							...busStops,
-							...arrayOfBusStops,
-						]);
+						if (arrayOfBusStops.length > 0) {
+							// setbusStops((busStops) => [
+							// 	busStops,
+							// 	...arrayOfBusStops,
+                            // ]);
+
+                            setbusStops(arrayOfBusStops);
+                            
+                            // console.log("============");
+                            // console.log(JSON.stringify(busStops));
+						}
 					})
 					.catch((error) => {
 						console.log(error);
