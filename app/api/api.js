@@ -41,3 +41,7 @@ export const getBusStops = async (skip = null) => {
 
 	return data;
 };
+
+export const getAllBusStops = async () => {
+	// var data = await Promise.all[]
+}
