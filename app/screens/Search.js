@@ -15,7 +15,6 @@ const Search = () => {
 		console.log(search);
 		// Search for bus stops
 		if (search.length >= 3) {
-			setbusStops([]);
 			var arrayOfBusStops = [];
 			// 5042 records available
 
@@ -28,17 +27,23 @@ const Search = () => {
 				);
 			}
 
-			Promise.all(arrayOfPromises).then((res) => {
-				res.map((busStop) => {
-					busStop.forEach((stop) => arrayOfBusStops.push(stop));
-					console.log(arrayOfBusStops.length);
+			Promise.all(arrayOfPromises)
+				.then((res) => {
+					res.map((busStop) => {
+						busStop.forEach((stop) => arrayOfBusStops.push(stop));
+						// console.log(arrayOfBusStops.length);
+					});
+					setbusStops(
+						arrayOfBusStops.filter((busstop) =>
+							busstop.Description.toLowerCase().includes(search) ||
+							busstop.RoadName.toLowerCase().includes(search) ||
+							busstop.BusStopCode.toLowerCase().includes(search)
+						)
+					);
+				})
+				.then(() => {
+					console.log("Done getting all bus stops");
 				});
-			}).then(() => {
-				console.log("Done getting all bus stops");
-				setbusStops(arrayOfBusStops);
-			});
-
-			// console.log("JSON " + JSON.stringify(arrayOfPromises.length));
 
 			// for (var pageSearched = 0; pageSearched < 5; pageSearched++) {
 			// 	// console.log("Page searched: " + pageSearched);
