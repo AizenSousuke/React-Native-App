@@ -9,6 +9,7 @@ import BusStopList from "../components/BusStopList";
 
 const Search = () => {
 	const [search, updateSearch] = useState("");
+	const [canSearch, setCanSearch] = useState(true);
 	const [busService, setBusService] = useState([]);
 	const [busStops, setbusStops] = useState([]);
 	const searchLength = 5;
@@ -17,8 +18,10 @@ const Search = () => {
 	useEffect(() => {
 		console.log(search);
 		// Search for bus stops
-		if (search.length >= searchLength) {
+		if (search.length >= searchLength && canSearch) {
 			// 5042 records available
+			setCanSearch(false);
+			console.log("Setting can search to false");
 			var arrayOfBusStops = [];
 			var arrayOfPromises = [];
 			for (
@@ -57,6 +60,7 @@ const Search = () => {
 				.catch((err) => console.log(err))
 				.then(() => {
 					console.log("Done getting all bus stops");
+					setCanSearch(true);
 				});
 		}
 	}, [search]);
@@ -70,7 +74,7 @@ const Search = () => {
 					updateSearch(value);
 				}}
 				value={search.toString()}
-				showLoading
+				showLoading={true}
 			/>
 			<ScrollView>
 				{busStops.length > 0 ? (
@@ -87,9 +91,7 @@ const Search = () => {
 				) : (
 					<ListItem bottomDivider>
 						<ListItem.Content>
-							<ListItem.Title>
-								No results
-							</ListItem.Title>
+							<ListItem.Title>No results</ListItem.Title>
 						</ListItem.Content>
 					</ListItem>
 				)}

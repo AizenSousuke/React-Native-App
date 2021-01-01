@@ -1,5 +1,6 @@
 import * as secrets from "../../secrets.json";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const apiKey = secrets.apiKey;
 const header = {
@@ -8,6 +9,10 @@ const header = {
 };
 var BusArrivalURL =	"http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
 var BusStopsURL = "http://datamall2.mytransport.sg/ltaodataservice/BusStops";
+const dataKey = {
+	"GoingOut": "GoingOut",
+	"GoingBack": "GoingBack"
+}
 
 export const getBusArrival = async (code, serviceNumber = null) => {
 	var data = await axios
@@ -44,4 +49,22 @@ export const getBusStops = async (skip = null) => {
 
 export const getAllBusStops = async () => {
 	// var data = await Promise.all[]
+}
+
+export const storeData = async (value) => {
+	try {
+		var data = await AsyncStorage.setItem(JSON.stringify(dataKey.GoingOut), value);
+		return data;
+	} catch (error) {
+		console.log("Saving Error: " + error);
+	}
+}
+
+export const getData = async () => {
+	try {
+		var data = await AsyncStorage.getItem(dataKey.GoingOut);
+		return JSON.parse(data);
+	} catch (error) {
+		console.log("Get Data Error: " + error);
+	}
 }

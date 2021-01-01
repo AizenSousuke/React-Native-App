@@ -6,7 +6,7 @@ import { Icon, ListItem, Overlay, Tooltip } from "react-native-elements";
 const BusStopList = ({ name, address, code }) => {
 	const [OverlayVisible, setOverlayVisible] = useState(false);
 	return (
-		<ListItem bottomDivider>
+		<ListItem bottomDivider onPress={(x) => console.log(name + " is pressed.")}>
 			<ListItem.Content>
 				<ListItem.Title>{name ?? "Bus Stop Name"}</ListItem.Title>
 				<ListItem.Subtitle>
