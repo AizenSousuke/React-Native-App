@@ -3,10 +3,14 @@ import { Pressable } from "react-native";
 import { View, Text } from "react-native";
 import { Icon, ListItem, Overlay, Tooltip } from "react-native-elements";
 
+const saveBusStop = (busStopCode) => {
+	console.log("Saved bus stop: " + busStopCode);
+}
+
 const BusStopList = ({ name, address, code }) => {
 	const [OverlayVisible, setOverlayVisible] = useState(false);
 	return (
-		<ListItem bottomDivider onPress={(x) => console.log(name + " is pressed.")}>
+		<ListItem bottomDivider onPress={() => saveBusStop(code)}>
 			<ListItem.Content>
 				<ListItem.Title>{name ?? "Bus Stop Name"}</ListItem.Title>
 				<ListItem.Subtitle>
