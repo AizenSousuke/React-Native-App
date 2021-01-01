@@ -5,21 +5,27 @@ import styles from "../../assets/css/AppStyles";
 import { getBusArrival, getBusStops } from "../api/api";
 import BusDetails from "../components/BusDetails";
 import { ScrollView } from "react-native-gesture-handler";
+import BusStopList from "../components/BusStopList";
 
 const Search = () => {
 	const [search, updateSearch] = useState("");
 	const [busService, setBusService] = useState([]);
 	const [busStops, setbusStops] = useState([]);
+	const searchLength = 5;
+	const pageSearchLength = 11;
 
 	useEffect(() => {
 		console.log(search);
 		// Search for bus stops
-		if (search.length >= 3) {
-			var arrayOfBusStops = [];
+		if (search.length >= searchLength) {
 			// 5042 records available
-
+			var arrayOfBusStops = [];
 			var arrayOfPromises = [];
-			for (var pageSearched = 0; pageSearched < 11; pageSearched++) {
+			for (
+				var pageSearched = 0;
+				pageSearched < pageSearchLength;
+				pageSearched++
+			) {
 				arrayOfPromises.push(
 					getBusStops(pageSearched)
 						.then((res) => res.value)
@@ -34,55 +40,24 @@ const Search = () => {
 						// console.log(arrayOfBusStops.length);
 					});
 					setbusStops(
-						arrayOfBusStops.filter((busstop) =>
-							busstop.Description.toLowerCase().includes(search) ||
-							busstop.RoadName.toLowerCase().includes(search) ||
-							busstop.BusStopCode.toLowerCase().includes(search)
+						arrayOfBusStops.filter(
+							(busstop) =>
+								busstop.Description.toLowerCase().includes(
+									search
+								) ||
+								busstop.RoadName.toLowerCase().includes(
+									search
+								) ||
+								busstop.BusStopCode.toLowerCase().includes(
+									search
+								)
 						)
 					);
 				})
+				.catch((err) => console.log(err))
 				.then(() => {
 					console.log("Done getting all bus stops");
 				});
-
-			// for (var pageSearched = 0; pageSearched < 5; pageSearched++) {
-			// 	// console.log("Page searched: " + pageSearched);
-			// 	getBusStops(pageSearched)
-			// 		.then((res) => {
-			// 			res.value.forEach((busstop) => {
-			// 				if (
-			// 					busstop.BusStopCode.toLowerCase().includes(
-			// 						search
-			// 					) ||
-			// 					busstop.RoadName.toLowerCase().includes(
-			// 						search
-			// 					) ||
-			// 					busstop.Description.toLowerCase().includes(
-			// 						search
-			// 					)
-			// 				) {
-			// 					// console.log("Includes: " + busstop.Description);
-			// 					arrayOfBusStops.push(busstop);
-			// 					console.log(arrayOfBusStops.length);
-			// 				}
-			// 			});
-
-			// 			if (arrayOfBusStops.length > 0) {
-			// 				// setbusStops((busStops) => [
-			// 				// 	busStops,
-			// 				// 	...arrayOfBusStops,
-			//                 // ]);
-
-			//                 setbusStops(arrayOfBusStops);
-
-			//                 // console.log("============");
-			//                 console.log(JSON.stringify(busStops));
-			// 			}
-			// 		})
-			// 		.catch((error) => {
-			// 			console.log(error);
-			// 		});
-			// }
 		}
 	}, [search]);
 
@@ -101,22 +76,18 @@ const Search = () => {
 				{busStops.length > 0 ? (
 					busStops.map((stops, key) => {
 						return (
-							<ListItem key={key} bottomDivider>
-								<ListItem.Content>
-									<ListItem.Title h4>
-										{stops.Description}
-									</ListItem.Title>
-									<ListItem.Subtitle>
-										{stops.RoadName} ({stops.BusStopCode})
-									</ListItem.Subtitle>
-								</ListItem.Content>
-							</ListItem>
+							<BusStopList
+								key={key}
+								name={stops.Description}
+								address={stops.RoadName}
+								code={stops.BusStopCode}
+							/>
 						);
 					})
 				) : (
 					<ListItem bottomDivider>
 						<ListItem.Content>
-							<ListItem.Title h4 style={{ textAlign: "center" }}>
+							<ListItem.Title>
 								No results
 							</ListItem.Title>
 						</ListItem.Content>
