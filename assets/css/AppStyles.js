@@ -88,5 +88,12 @@ export default StyleSheet.create({
 	busTiming: {
 		paddingRight: 5,
 		color: "black",
-	}
+	},
+	estimatedArrival: {
+		textAlign: "center"
+	},
+	busType: {
+		fontSize: 10,
+		textAlign: "center"
+	},
 });
