@@ -28,12 +28,12 @@ const GetColorForLoad = (load) => {
 const BusDetails = ({ busNumber, details }) => {
 	return (
 		<View style={styles.busDetails}>
-			<Text style={styles.busNumber}>{busNumber}</Text>
+			<Text style={[styles.busNumber, {flex: 0.2}]}>{busNumber}</Text>
 			<View
 				style={{
-					flex: 1,
+					flex: 0.8,
 					flexDirection: "row",
-					justifyContent: "space-evenly",
+					justifyContent: "space-around",
 				}}
 			>
 				<View style={{ flexDirection: "column" }}>
