@@ -55,49 +55,73 @@ const BusDetails = ({ busNumber, details }) => {
 				}}
 			>
 				<View style={{ flexDirection: "column" }}>
-					<Text style={styles.busType}>
-						{details.NextBus?.Type == "DD" ? "Double" : ""}
-					</Text>
-					<Progress.Bar
-						progress={GetValueForLoad(details.NextBus?.Load)}
-						color={GetColorForLoad(details.NextBus?.Load)}
-						width={50}
-					/>
-					<Text style={styles.estimatedArrival}>
-						{GetEstimatedArrivalMinute(
-							details.NextBus?.EstimatedArrival
-						).toString()}
-					</Text>
+					{details.NextBus.Load !== "" ? (
+						<>
+							<Text style={styles.busType}>
+								{details.NextBus?.Type == "DD" ? "Double" : ""}
+							</Text>
+							<Progress.Bar
+								progress={GetValueForLoad(
+									details.NextBus?.Load
+								)}
+								color={GetColorForLoad(details.NextBus?.Load)}
+								width={50}
+							/>
+							<Text style={styles.estimatedArrival}>
+								{GetEstimatedArrivalMinute(
+									details.NextBus?.EstimatedArrival
+								).toString()}
+							</Text>
+						</>
+					) : (
+						<Text style={styles.noData}>No data</Text>
+					)}
 				</View>
 				<View style={{ flexDirection: "column" }}>
-					<Text style={styles.busType}>
-						{details.NextBus2?.Type == "DD" ? "Double" : ""}
-					</Text>
-					<Progress.Bar
-						progress={GetValueForLoad(details.NextBus2?.Load)}
-						color={GetColorForLoad(details.NextBus2?.Load)}
-						width={50}
-					/>
-					<Text style={styles.estimatedArrival}>
-						{GetEstimatedArrivalMinute(
-							details.NextBus2?.EstimatedArrival
-						).toString()}
-					</Text>
+					{details.NextBus2.Load !== "" ? (
+						<>
+							<Text style={styles.busType}>
+								{details.NextBus2?.Type == "DD" ? "Double" : ""}
+							</Text>
+							<Progress.Bar
+								progress={GetValueForLoad(
+									details.NextBus2?.Load
+								)}
+								color={GetColorForLoad(details.NextBus2?.Load)}
+								width={50}
+							/>
+							<Text style={styles.estimatedArrival}>
+								{GetEstimatedArrivalMinute(
+									details.NextBus2?.EstimatedArrival
+								).toString()}
+							</Text>
+						</>
+					) : (
+						<Text style={styles.noData}>No data</Text>
+					)}
 				</View>
 				<View style={{ flexDirection: "column" }}>
-					<Text style={styles.busType}>
-						{details.NextBus2?.Type == "DD" ? "Double" : ""}
-					</Text>
-					<Progress.Bar
-						progress={GetValueForLoad(details.NextBus3?.Load)}
-						color={GetColorForLoad(details.NextBus3?.Load)}
-						width={50}
-					/>
-					<Text style={styles.estimatedArrival}>
-						{GetEstimatedArrivalMinute(
-							details.NextBus3?.EstimatedArrival
-						).toString()}
-					</Text>
+					{details.NextBus3.Load !== "" ? (
+						<>
+							<Text style={styles.busType}>
+								{details.NextBus2?.Type == "DD" ? "Double" : ""}
+							</Text>
+							<Progress.Bar
+								progress={GetValueForLoad(
+									details.NextBus3?.Load
+								)}
+								color={GetColorForLoad(details.NextBus3?.Load)}
+								width={50}
+							/>
+							<Text style={styles.estimatedArrival}>
+								{GetEstimatedArrivalMinute(
+									details.NextBus3?.EstimatedArrival
+								).toString()}
+							</Text>
+						</>
+					) : (
+						<Text style={styles.noData}>No data</Text>
+					)}
 				</View>
 			</View>
 		</View>

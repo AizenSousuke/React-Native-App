@@ -96,4 +96,7 @@ export default StyleSheet.create({
 		fontSize: 10,
 		textAlign: "center"
 	},
+	noData: {
+		paddingTop: 8,
+	}
 });

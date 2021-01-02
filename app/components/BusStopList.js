@@ -4,16 +4,29 @@ import { View, Text } from "react-native";
 import Collapsible from "react-native-collapsible";
 import { Icon, ListItem, Overlay } from "react-native-elements";
 import BusStop from "./BusStop";
+import { getBusArrival } from "../api/api";
 
 const BusStopList = ({ name, address, code }) => {
 	const [OverlayVisible, setOverlayVisible] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const [arrow, setArrow] = useState(false);
+	const [busStopData, setBusStopData] = useState(0);
+
+	const getData = () => {
+		getBusArrival(code)
+			.then((res) => {
+				setBusStopData(res);
+				// console.log("Effect res: " + JSON.stringify(res));
+				console.log("Set new bus stop data due to a change in code.");
+			})
+			.catch((err) => console.log(err));
+	};
 
 	useEffect(() => {
 		// Reset the collapse when a new code is provided
 		setIsCollapsed(true);
 		setArrow(false);
+		getData();
 	}, [code]);
 
 	return (
@@ -86,6 +99,7 @@ const BusStopList = ({ name, address, code }) => {
 					<Pressable
 						onPress={() => {
 							console.log("Refreshing bus stop " + code);
+							getData();
 						}}
 						android_ripple={{ borderless: true }}
 					>
@@ -96,7 +110,7 @@ const BusStopList = ({ name, address, code }) => {
 				)}
 			</ListItem>
 			<Collapsible collapsed={isCollapsed}>
-				<BusStop code={code} />
+				<BusStop busStopData={busStopData} />
 			</Collapsible>
 		</View>
 	);

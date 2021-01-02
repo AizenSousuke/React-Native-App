@@ -32,7 +32,7 @@ const GoingOut = () => {
 			}
 		>
 			{data != null ? data : null}
-			<BusStopList />
+			{/* <BusStopList /> */}
 		</ScrollView>
 	);
 };
