@@ -69,17 +69,21 @@ export default StyleSheet.create({
 		letterSpacing: 3,
 	},
 	busStop: {
-		paddingBottom: 10,
+		backgroundColor: "white",
 	},
 	busStopDetails: {
-		paddingRight: 10,
-		color: "white",
-		textShadowColor: "white",
-		textShadowRadius: 10,
-		textShadowOffset: { height: 1, width: 1 },
+		color: "black",
 	},
 	busDetails: {
+		flex: 1,
 		flexDirection: "row",
+		backgroundColor: "white",
+		padding: 20,
+	},
+	busNumber: {
+		paddingRight: 5,
+		color: "black",
+		fontWeight: "bold",
 	},
 	busTiming: {
 		paddingRight: 5,

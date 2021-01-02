@@ -8,22 +8,18 @@ const BusStop = ({ code }) => {
 	const [busStopData, setBusStopData] = useState(0);
 
 	useEffect(() => {
-		getBusArrival(code).then((res) => {
-			setBusStopData(res);
-			// console.log("Effect res: " + JSON.stringify(res));
-		});
+		getBusArrival(code)
+			.then((res) => {
+				setBusStopData(res);
+				// console.log("Effect res: " + JSON.stringify(res));
+			})
+			.catch((err) => console.log(err));
 	}, []);
 
 	return (
 		<View style={styles.busStop}>
-			<View style={{ flexDirection: "row" }}>
-				<Text style={styles.busStopDetails}>
-					Bus Stop: {code ?? "No bus stop code set"}
-				</Text>
-				<Button title={"Refresh"}></Button>
-			</View>
 			{busStopData.Services?.map((service, key) => {
-				return <BusDetails key={key} busNumber={service.ServiceNo} />;
+				return <BusDetails key={key} busNumber={service.ServiceNo} details={service} />;
 			})}
 		</View>
 	);
