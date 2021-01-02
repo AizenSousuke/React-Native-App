@@ -15,14 +15,11 @@ const Search = () => {
 	const searchLength = 5;
 	const pageSearchLength = 11;
 
-	useEffect(() => {
-		console.log("Search: " + search);
-		console.log("Can search? " + canSearch);
+	const searchForBusStops = () => {
+		console.log("Searching for bus stops");
 		// Search for bus stops
-		if (search.length >= searchLength && canSearch) {
+		if (search.length >= searchLength) {
 			// 5042 records available
-			setCanSearch(false);
-			console.log("Setting can search to false");
 			var arrayOfBusStops = [];
 			var arrayOfPromises = [];
 			for (
@@ -61,9 +58,14 @@ const Search = () => {
 				.catch((err) => console.log(err))
 				.then(() => {
 					console.log("Done getting all bus stops");
-					setCanSearch(true);
 				});
-		}
+			}
+	}
+
+	useEffect(() => {
+		// console.log("Search: " + search);
+		// console.log("Can search? " + canSearch);
+		// searchForBusStops();
 	}, [search]);
 
 	return (
@@ -74,8 +76,11 @@ const Search = () => {
 					console.log("Value: " + value);
 					updateSearch(value);
 				}}
+				onSubmitEditing={() => {
+					console.log("Searching for: " + search);
+					searchForBusStops();
+				}}
 				value={search.toString()}
-				showLoading={true}
 			/>
 			<ScrollView>
 				{busStops.length > 0 ? (
@@ -97,32 +102,6 @@ const Search = () => {
 					</ListItem>
 				)}
 			</ScrollView>
-
-			{/* {busService.length > 0 ? (
-				busService.map((service, key) => {
-					console.log("Service No: " + service.ServiceNo);
-					return (
-						<ListItem key={key} bottomDivider>
-							<ListItem.Content>
-								<ListItem.Title h4>
-									{service.ServiceNo}
-								</ListItem.Title>
-								<ListItem.Subtitle>
-									<BusDetails busNumber={service.ServiceNo} />
-								</ListItem.Subtitle>
-							</ListItem.Content>
-						</ListItem>
-					);
-				})
-			) : (
-				<ListItem bottomDivider>
-					<View style={{ flex: 0.5 }}></View>
-					<View style={{ flex: 1 }}>
-						<Text h3>No results</Text>
-					</View>
-					<View style={{ flex: 0.5 }}></View>
-				</ListItem>
-			)} */}
 		</View>
 	);
 };
