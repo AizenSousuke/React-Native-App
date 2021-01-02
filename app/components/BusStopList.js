@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable } from "react-native";
 import { View, Text } from "react-native";
 import Collapsible from "react-native-collapsible";
-import { Icon, ListItem, Overlay, Tooltip } from "react-native-elements";
+import { Icon, ListItem, Overlay } from "react-native-elements";
 import BusStop from "./BusStop";
 
 const BusStopList = ({ name, address, code }) => {
 	const [OverlayVisible, setOverlayVisible] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const [arrow, setArrow] = useState(false);
+
+	useEffect(() => {
+		// Reset the collapse when a new code is provided
+		setIsCollapsed(true);
+		setArrow(false);
+	}, [code]);
+
 	return (
 		<View>
 			<ListItem
