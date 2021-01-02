@@ -8,7 +8,7 @@ const SearchButton = ({ onPress }) => {
 			showBackground={false}
 			distanceToEdge={{ horizontal: 15, vertical: 80 }}
 			onPressMain={onPress}
-			floatingIcon={<Icon name="gps-fixed" color={"white"} />}
+			floatingIcon={<Icon name="search" color={"white"} />}
 		/>
 	);
 };

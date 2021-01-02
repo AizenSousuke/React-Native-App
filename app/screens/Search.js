@@ -16,7 +16,8 @@ const Search = () => {
 	const pageSearchLength = 11;
 
 	useEffect(() => {
-		console.log(search);
+		console.log("Search: " + search);
+		console.log("Can search? " + canSearch);
 		// Search for bus stops
 		if (search.length >= searchLength && canSearch) {
 			// 5042 records available
