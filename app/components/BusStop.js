@@ -7,7 +7,7 @@ import { getBusArrival } from "../api/api";
 const BusStop = ({ code }) => {
 	const [busStopData, setBusStopData] = useState(0);
 
-	useEffect(() => {
+	const getData = () => {
 		getBusArrival(code)
 			.then((res) => {
 				setBusStopData(res);
@@ -15,12 +15,22 @@ const BusStop = ({ code }) => {
 				console.log("Set new bus stop data due to a change in code.");
 			})
 			.catch((err) => console.log(err));
+	};
+
+	useEffect(() => {
+		getData();
 	}, [code]);
 
 	return (
 		<View style={styles.busStop}>
 			{busStopData.Services?.map((service, key) => {
-				return <BusDetails key={key} busNumber={service.ServiceNo} details={service} />;
+				return (
+					<BusDetails
+						key={key}
+						busNumber={service.ServiceNo}
+						details={service}
+					/>
+				);
 			})}
 		</View>
 	);
