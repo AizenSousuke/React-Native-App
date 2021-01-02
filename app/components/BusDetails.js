@@ -30,10 +30,10 @@ const GetEstimatedArrivalMinute = (estimatedArrivalTime) => {
 	var timeNow = moment().utcOffset("+08:00").format();
 	var time1 = moment(timeNow);
 	var time2 = moment(estimatedArrivalTime);
-	console.log("Time now: " + timeNow);
-	console.log("Time bus is reaching: " + estimatedArrivalTime);
+	// console.log("Time now: " + timeNow);
+	// console.log("Time bus is reaching: " + estimatedArrivalTime);
 	var timeEstimatedArrival = time2.diff(time1, "minutes");
-	console.log("Time estimated arrival: " + timeEstimatedArrival);
+	// console.log("Time estimated arrival: " + timeEstimatedArrival);
 
 	if (parseInt(timeEstimatedArrival) > 2) {
 		return timeEstimatedArrival + " min";
@@ -55,7 +55,9 @@ const BusDetails = ({ busNumber, details }) => {
 				}}
 			>
 				<View style={{ flexDirection: "column" }}>
-					<Text style={styles.busType}>{details.NextBus?.Type == "DD" ? "Double" : ""}</Text>
+					<Text style={styles.busType}>
+						{details.NextBus?.Type == "DD" ? "Double" : ""}
+					</Text>
 					<Progress.Bar
 						progress={GetValueForLoad(details.NextBus?.Load)}
 						color={GetColorForLoad(details.NextBus?.Load)}
@@ -68,7 +70,9 @@ const BusDetails = ({ busNumber, details }) => {
 					</Text>
 				</View>
 				<View style={{ flexDirection: "column" }}>
-					<Text style={styles.busType}>{details.NextBus2?.Type == "DD" ? "Double" : ""}</Text>
+					<Text style={styles.busType}>
+						{details.NextBus2?.Type == "DD" ? "Double" : ""}
+					</Text>
 					<Progress.Bar
 						progress={GetValueForLoad(details.NextBus2?.Load)}
 						color={GetColorForLoad(details.NextBus2?.Load)}
@@ -81,7 +85,9 @@ const BusDetails = ({ busNumber, details }) => {
 					</Text>
 				</View>
 				<View style={{ flexDirection: "column" }}>
-					<Text style={styles.busType}>{details.NextBus2?.Type == "DD" ? "Double" : ""}</Text>
+					<Text style={styles.busType}>
+						{details.NextBus2?.Type == "DD" ? "Double" : ""}
+					</Text>
 					<Progress.Bar
 						progress={GetValueForLoad(details.NextBus3?.Load)}
 						color={GetColorForLoad(details.NextBus3?.Load)}

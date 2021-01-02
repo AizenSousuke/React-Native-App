@@ -9,7 +9,6 @@ const BusStopList = ({ name, address, code }) => {
 	const [OverlayVisible, setOverlayVisible] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const [arrow, setArrow] = useState(false);
-	const childRef = useRef(null);
 
 	useEffect(() => {
 		// Reset the collapse when a new code is provided
@@ -97,7 +96,7 @@ const BusStopList = ({ name, address, code }) => {
 				)}
 			</ListItem>
 			<Collapsible collapsed={isCollapsed}>
-				<BusStop ref={childRef} code={code} />
+				<BusStop code={code} />
 			</Collapsible>
 		</View>
 	);

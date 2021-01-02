@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Header, ListItem, SearchBar } from "react-native-elements";
 import styles from "../../assets/css/AppStyles";
@@ -10,15 +10,18 @@ import BusStopList from "../components/BusStopList";
 const Search = () => {
 	const [search, updateSearch] = useState("");
 	const [canSearch, setCanSearch] = useState(true);
+	const [searching, setSearching] = useState(false);
 	const [busService, setBusService] = useState([]);
 	const [busStops, setbusStops] = useState([]);
 	const searchLength = 5;
 	const pageSearchLength = 11;
+	const limitResults = 20;
 
 	const searchForBusStops = () => {
 		console.log("Searching for bus stops");
 		// Search for bus stops
 		if (search.length >= searchLength) {
+			setSearching(true);
 			// 5042 records available
 			var arrayOfBusStops = [];
 			var arrayOfPromises = [];
@@ -40,8 +43,8 @@ const Search = () => {
 						busStop.forEach((stop) => arrayOfBusStops.push(stop));
 						// console.log(arrayOfBusStops.length);
 					});
-					setbusStops(
-						arrayOfBusStops.filter(
+					var results = arrayOfBusStops
+						.filter(
 							(busstop) =>
 								busstop.Description.toLowerCase().includes(
 									search
@@ -53,14 +56,17 @@ const Search = () => {
 									search
 								)
 						)
-					);
+						.slice(0, limitResults);
+					console.log("Result size: " + results.length);
+					setbusStops(results);
 				})
 				.catch((err) => console.log(err))
 				.then(() => {
 					console.log("Done getting all bus stops");
+					setSearching(false);
 				});
-			}
-	}
+		}
+	};
 
 	useEffect(() => {
 		// console.log("Search: " + search);
@@ -83,7 +89,7 @@ const Search = () => {
 				value={search.toString()}
 			/>
 			<ScrollView>
-				{busStops.length > 0 ? (
+				{busStops.length > 0 && !searching ? (
 					busStops.map((stops, key) => {
 						return (
 							<BusStopList
@@ -97,7 +103,20 @@ const Search = () => {
 				) : (
 					<ListItem bottomDivider>
 						<ListItem.Content>
-							<ListItem.Title>No results</ListItem.Title>
+							<ListItem.Title>
+								{searching ? (
+									<>
+										Searching:
+										<ActivityIndicator
+											size={"small"}
+											color={"black"}
+											style={{paddingLeft: 10}}
+										/>
+									</>
+								) : (
+									<>No results</>
+								)}
+							</ListItem.Title>
 						</ListItem.Content>
 					</ListItem>
 				)}
