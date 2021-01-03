@@ -10,11 +10,13 @@ const BusStopList = ({ name, address, code }) => {
 	const [OverlayVisible, setOverlayVisible] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const [arrow, setArrow] = useState(false);
-	const [busStopData, setBusStopData] = useState(0);
+	const [busStopData, setBusStopData] = useState([]);
 
 	const getData = () => {
 		getBusArrival(code)
 			.then((res) => {
+				// console.log("Bus stop data: " + JSON.stringify(busStopData));
+				// setBusStopData((oldData) => ({...oldData, res}));
 				setBusStopData(res);
 				// console.log("Effect res: " + JSON.stringify(res));
 				console.log("Set new bus stop data due to a change in code.");
@@ -109,9 +111,9 @@ const BusStopList = ({ name, address, code }) => {
 					</Pressable>
 				)}
 			</ListItem>
-			<Collapsible collapsed={isCollapsed}>
-				<BusStop busStopData={busStopData} />
-			</Collapsible>
+			{/* <Collapsible collapsed={isCollapsed}> */}
+				<BusStop busStopData={busStopData} collapse={isCollapsed} />
+			{/* </Collapsible> */}
 		</View>
 	);
 };

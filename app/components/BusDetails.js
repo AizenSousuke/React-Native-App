@@ -58,18 +58,18 @@ const BusDetails = ({ busNumber, details }) => {
 					{details.NextBus.Load !== "" ? (
 						<>
 							<Text style={styles.busType}>
-								{details.NextBus?.Type == "DD" ? "Double" : ""}
+								{details.NextBus.Type == "DD" ? "Double" : ""}
 							</Text>
 							<Progress.Bar
 								progress={GetValueForLoad(
-									details.NextBus?.Load
+									details.NextBus.Load
 								)}
-								color={GetColorForLoad(details.NextBus?.Load)}
+								color={GetColorForLoad(details.NextBus.Load)}
 								width={50}
 							/>
 							<Text style={styles.estimatedArrival}>
 								{GetEstimatedArrivalMinute(
-									details.NextBus?.EstimatedArrival
+									details.NextBus.EstimatedArrival
 								).toString()}
 							</Text>
 						</>
@@ -81,18 +81,18 @@ const BusDetails = ({ busNumber, details }) => {
 					{details.NextBus2.Load !== "" ? (
 						<>
 							<Text style={styles.busType}>
-								{details.NextBus2?.Type == "DD" ? "Double" : ""}
+								{details.NextBus2.Type == "DD" ? "Double" : ""}
 							</Text>
 							<Progress.Bar
 								progress={GetValueForLoad(
-									details.NextBus2?.Load
+									details.NextBus2.Load
 								)}
-								color={GetColorForLoad(details.NextBus2?.Load)}
+								color={GetColorForLoad(details.NextBus2.Load)}
 								width={50}
 							/>
 							<Text style={styles.estimatedArrival}>
 								{GetEstimatedArrivalMinute(
-									details.NextBus2?.EstimatedArrival
+									details.NextBus2.EstimatedArrival
 								).toString()}
 							</Text>
 						</>
@@ -104,18 +104,18 @@ const BusDetails = ({ busNumber, details }) => {
 					{details.NextBus3.Load !== "" ? (
 						<>
 							<Text style={styles.busType}>
-								{details.NextBus2?.Type == "DD" ? "Double" : ""}
+								{details.NextBus2.Type == "DD" ? "Double" : ""}
 							</Text>
 							<Progress.Bar
 								progress={GetValueForLoad(
-									details.NextBus3?.Load
+									details.NextBus3.Load
 								)}
-								color={GetColorForLoad(details.NextBus3?.Load)}
+								color={GetColorForLoad(details.NextBus3.Load)}
 								width={50}
 							/>
 							<Text style={styles.estimatedArrival}>
 								{GetEstimatedArrivalMinute(
-									details.NextBus3?.EstimatedArrival
+									details.NextBus3.EstimatedArrival
 								).toString()}
 							</Text>
 						</>
