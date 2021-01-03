@@ -111,9 +111,9 @@ const BusStopList = ({ name, address, code }) => {
 					</Pressable>
 				)}
 			</ListItem>
-			{/* <Collapsible collapsed={isCollapsed}> */}
-				<BusStop busStopData={busStopData} collapse={isCollapsed} />
-			{/* </Collapsible> */}
+			<Collapsible collapsed={isCollapsed}>
+				<BusStop busStopData={busStopData} />
+			</Collapsible>
 		</View>
 	);
 };

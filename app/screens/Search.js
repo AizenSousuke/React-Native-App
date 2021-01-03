@@ -76,19 +76,19 @@ const Search = () => {
 
 	return (
 		<View>
-			<SearchBar
-				placeholder={"Search for a bus stop"}
-				onChangeText={(value) => {
-					console.log("Value: " + value);
-					updateSearch(value);
-				}}
-				onSubmitEditing={() => {
-					console.log("Searching for: " + search);
-					searchForBusStops();
-				}}
-				value={search.toString()}
-			/>
 			<ScrollView>
+				<SearchBar
+					placeholder={"Search for a bus stop"}
+					onChangeText={(value) => {
+						console.log("Value: " + value);
+						updateSearch(value);
+					}}
+					onSubmitEditing={() => {
+						console.log("Searching for: " + search);
+						searchForBusStops();
+					}}
+					value={search.toString()}
+				/>
 				{busStops.length > 0 && !searching ? (
 					busStops.map((stops, key) => {
 						return (
@@ -110,7 +110,7 @@ const Search = () => {
 										<ActivityIndicator
 											size={"small"}
 											color={"black"}
-											style={{paddingLeft: 10}}
+											style={{ paddingLeft: 10 }}
 										/>
 									</>
 								) : (
