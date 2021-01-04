@@ -2,7 +2,7 @@ import { View, Text, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Header, ListItem, SearchBar } from "react-native-elements";
 import styles from "../../assets/css/AppStyles";
-import { getBusArrival, getBusStops } from "../api/api";
+import { getBusArrival, getBusStops, storeData } from "../api/api";
 import BusDetails from "../components/BusDetails";
 import { ScrollView } from "react-native-gesture-handler";
 import BusStopList from "../components/BusStopList";
@@ -59,6 +59,7 @@ const Search = () => {
 						.slice(0, limitResults);
 					console.log("Result size: " + results.length);
 					setbusStops(results);
+					storeData(JSON.stringify(results));
 				})
 				.catch((err) => console.log(err))
 				.then(() => {
@@ -69,9 +70,7 @@ const Search = () => {
 	};
 
 	useEffect(() => {
-		// console.log("Search: " + search);
-		// console.log("Can search? " + canSearch);
-		// searchForBusStops();
+
 	}, [search]);
 
 	return (
