@@ -52,23 +52,50 @@ export const getAllBusStops = async () => {
 	// var data = await Promise.all[]
 };
 
+export const BusStopTableCheck = (tx) => {
+	tx.executeSql(
+		`
+		CREATE TABLE IF NOT EXISTS BusStopList (
+			Id INTEGER PRIMARY KEY AUTOINCREMENT,
+			Data nvarchar(255) NULL
+		);`,
+		[]
+	);
+};
+
 export const storeData = async (value) => {
 	try {
 		var data = null;
 		var db = SQLite.openDatabase("sgbus.db");
 		db.transaction(
 			(tx) => {
+				// tx.executeSql(`
+				// DROP TABLE BusStopList
+				// `);
+
+				// tx.executeSql(
+				// 	`
+				// 	CREATE TABLE IF NOT EXISTS BusStopList (
+				// 		Id INTEGER PRIMARY KEY AUTOINCREMENT,
+				// 		Data nvarchar(255) NULL
+				// 	);
+				// `,
+				// 	[]
+				// );
+
+				BusStopTableCheck(tx);
+
 				tx.executeSql(
 					`
-				CREATE TABLE IF NOT EXISTS BusStopList (
-					Id uniqueidentifier NOT NULL,
-					Data nvarchar(255) NULL
-				);
-
-				SELECT * FROM BusStopList;
-			`,
-					null,
+					INSERT INTO BusStopList (
+						Data
+					) VALUES (
+						?
+					)
+				`,
+					[value],
 					(tx, res) => {
+						console.log("Value: " + JSON.stringify(value));
 						console.log(JSON.stringify(res));
 					}
 				);
@@ -81,9 +108,46 @@ export const storeData = async (value) => {
 	}
 };
 
-export const getData = async () => {
+export const getData = async (value = null) => {
 	try {
 		var data = null;
+		var db = SQLite.openDatabase("sgbus.db");
+		db.transaction(
+			(tx) => {
+				if (value == null) {
+					console.log("Value is null");
+					tx.executeSql(
+						`
+						SELECT Data FROM BusStopList
+					`,
+						[],
+						(tx, res) => {
+							console.log("Value: " + JSON.stringify(value));
+							console.log(JSON.stringify(res));
+						}
+					);
+				} else {
+					tx.executeSql(
+						`
+						SELECT Data FROM BusStopList
+						WHERE 
+							Data LIKE '%' + ? + '%'
+					`,
+						[value],
+						(tx, res) => {
+							console.log("Value: " + JSON.stringify(value));
+							console.log(JSON.stringify(res));
+						}
+					);
+				}
+			},
+			(err) => {
+				console.error(
+					"Error in getting data from SQLite " + err.message
+				);
+			},
+			() => console.log("Successfully read data from SQLite")
+		);
 		return data;
 	} catch (error) {
 		console.log("Get Data Error: " + error);
