@@ -8,10 +8,10 @@ const GoingOut = () => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [data, setdata] = useState(null);
 	useEffect(() => {
-		getData().then((data) => {
-			setdata(data);
-			console.log("Data: " + data);
-		});
+		// getData().then((data) => {
+		// 	setdata(data);
+		// 	console.log("Data: " + data);
+		// });
 	}, []);
 	return (
 		<ScrollView
@@ -22,6 +22,7 @@ const GoingOut = () => {
 						setRefreshing(true);
 						getData()
 							.then((data) => {
+								console.log("Data: " + JSON.stringify(data));
 								setdata(data);
 								console.log("Refreshed");
 								setRefreshing(false);
@@ -31,7 +32,7 @@ const GoingOut = () => {
 				></RefreshControl>
 			}
 		>
-			{data != null ? data : null}
+			{data != null ? <Text>{JSON.stringify(data)}</Text> : <Text>No data: {JSON.stringify(data)}</Text>}
 			{/* <BusStopList /> */}
 		</ScrollView>
 	);

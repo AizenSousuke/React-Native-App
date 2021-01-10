@@ -53,6 +53,7 @@ export const getAllBusStops = async () => {
 };
 
 export const BusStopTableCheck = (tx) => {
+	console.log("Creating if Bus Stop Table exists.");
 	tx.executeSql(
 		`
 		CREATE TABLE IF NOT EXISTS BusStopList (
@@ -63,25 +64,18 @@ export const BusStopTableCheck = (tx) => {
 	);
 };
 
+/**
+ * Stores a data into Bus Stop List Table
+ * @param {any} value Data to store
+ */
 export const storeData = async (value) => {
 	try {
-		var data = null;
 		var db = SQLite.openDatabase("sgbus.db");
 		db.transaction(
 			(tx) => {
 				// tx.executeSql(`
 				// DROP TABLE BusStopList
 				// `);
-
-				// tx.executeSql(
-				// 	`
-				// 	CREATE TABLE IF NOT EXISTS BusStopList (
-				// 		Id INTEGER PRIMARY KEY AUTOINCREMENT,
-				// 		Data nvarchar(255) NULL
-				// 	);
-				// `,
-				// 	[]
-				// );
 
 				BusStopTableCheck(tx);
 
@@ -93,21 +87,27 @@ export const storeData = async (value) => {
 						?
 					)
 				`,
-					[value],
+					[JSON.stringify(value)],
 					(tx, res) => {
 						console.log("Value: " + JSON.stringify(value));
-						console.log(JSON.stringify(res));
+						console.log("Res: " + JSON.stringify(res));
 					}
 				);
 			},
 			(err) => console.error("Error in storing to SQLite " + err.message),
-			() => console.log("Successfully stored data in SQLite")
+			() => {
+				console.log("Successfully stored data in SQLite");
+			}
 		);
 	} catch (error) {
 		console.log("Saving Error: " + error);
 	}
 };
 
+/**
+ * Get data from the Database
+ * @param {string} value If value is provided, it will search the SQL table for that value
+ */
 export const getData = async (value = null) => {
 	try {
 		var data = null;
@@ -115,7 +115,7 @@ export const getData = async (value = null) => {
 		db.transaction(
 			(tx) => {
 				if (value == null) {
-					console.log("Value is null");
+					console.log("Value provided is null");
 					tx.executeSql(
 						`
 						SELECT Data FROM BusStopList
@@ -123,7 +123,9 @@ export const getData = async (value = null) => {
 						[],
 						(tx, res) => {
 							console.log("Value: " + JSON.stringify(value));
-							console.log(JSON.stringify(res));
+							console.log("Res: " + JSON.stringify(res));
+							data = res;
+							return data;
 						}
 					);
 				} else {
@@ -136,7 +138,9 @@ export const getData = async (value = null) => {
 						[value],
 						(tx, res) => {
 							console.log("Value: " + JSON.stringify(value));
-							console.log(JSON.stringify(res));
+							console.log("Res: " + JSON.stringify(res));
+							data = res;
+							return data;
 						}
 					);
 				}
@@ -146,8 +150,11 @@ export const getData = async (value = null) => {
 					"Error in getting data from SQLite " + err.message
 				);
 			},
-			() => console.log("Successfully read data from SQLite")
+			() => {
+				console.log("Successfully read data from SQLite");
+			}
 		);
+		console.log("Data: " + JSON.stringify(data));
 		return data;
 	} catch (error) {
 		console.log("Get Data Error: " + error);
