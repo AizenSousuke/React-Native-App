@@ -2,7 +2,7 @@ import { View, Text, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Header, ListItem, SearchBar } from "react-native-elements";
 import styles from "../../assets/css/AppStyles";
-import { getBusArrival, getBusStops, storeData } from "../api/api";
+import { getAllBusStops, getBusArrival, getBusStops, getData, storeData } from "../api/api";
 import BusDetails from "../components/BusDetails";
 import { ScrollView } from "react-native-gesture-handler";
 import BusStopList from "../components/BusStopList";
@@ -43,6 +43,20 @@ const Search = () => {
 						busStop.forEach((stop) => arrayOfBusStops.push(stop));
 						// console.log(arrayOfBusStops.length);
 					});
+
+					// arrayOfBusStops is the list of all the bus stops
+					getData()
+					.then(b => {
+						console.log("Get all bus stops length: " + JSON.stringify(b));
+						// if (b.length == 0) {
+						// 	arrayOfBusStops.forEach(stop => {
+						// 		storeData(JSON.stringify(stop));
+						// 	});
+						// }
+					}).catch(err => {
+						console.log(err);
+					});
+
 					var results = arrayOfBusStops
 						.filter(
 							(busstop) =>
@@ -59,7 +73,6 @@ const Search = () => {
 						.slice(0, limitResults);
 					console.log("Result size: " + results.length);
 					setbusStops(results);
-					storeData(JSON.stringify(results));
 				})
 				.catch((err) => console.log(err))
 				.then(() => {

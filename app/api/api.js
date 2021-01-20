@@ -52,15 +52,25 @@ export const getAllBusStops = async () => {
 	// var data = await Promise.all[]
 };
 
+/**
+ * Create Bus Stop Table if it doesn't exists
+ */
 export const BusStopTableCheck = (tx) => {
 	console.log("Creating if Bus Stop Table exists.");
 	tx.executeSql(
 		`
 		CREATE TABLE IF NOT EXISTS BusStopList (
 			Id INTEGER PRIMARY KEY AUTOINCREMENT,
-			Data nvarchar(255) NULL
+			Data nvarchar(255) NULL,
+			LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
 		);`,
-		[]
+		[],
+		() => {
+			console.log("Success");
+		},
+		(err) => {
+			console.log("Error: {0}", err);
+		}
 	);
 };
 
