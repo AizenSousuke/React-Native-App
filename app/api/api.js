@@ -2,6 +2,7 @@ import * as secrets from "../../secrets.json";
 import axios from "axios";
 import * as SQLite from "expo-sqlite";
 
+const databaseName = databaseName;
 const apiKey = secrets.apiKey;
 const header = {
 	AccountKey: apiKey,
@@ -80,7 +81,7 @@ export const BusStopTableCheck = (tx) => {
  */
 export const storeData = async (value) => {
 	try {
-		var db = SQLite.openDatabase("sgbus.db");
+		var db = SQLite.openDatabase(databaseName);
 		db.transaction(
 			(tx) => {
 				// tx.executeSql(`
@@ -121,7 +122,7 @@ export const storeData = async (value) => {
 export const getData = async (value = null) => {
 	try {
 		var data = null;
-		var db = SQLite.openDatabase("sgbus.db");
+		var db = SQLite.openDatabase(databaseName);
 		db.transaction(
 			(tx) => {
 				if (value == null) {
@@ -168,5 +169,35 @@ export const getData = async (value = null) => {
 		return data;
 	} catch (error) {
 		console.log("Get Data Error: " + error);
+	}
+};
+
+/**
+ * Gets the last updated date of the bus stops in order to update
+ * it if required
+ */
+export const getLastUpdatedDate = () => {
+	try {
+		var data = null;
+		var db = SQLite.openDatabase(databaseName);
+		db.readTransaction(
+			() =>
+				tx.executeSql(
+					`
+			SELECT LastUpdatedDate FROM BusStopList
+			ORDER BY LastUpdatedDate desc
+		`,
+					[],
+					(tx, res) => {
+						data = res;
+						return data;
+					},
+					(err) => console.log("Error executing sql {0}", err)
+				),
+			(err) => console.log("Error reading transaction {0}", err),
+			() => console.log("Successfully read transaction")
+		);
+	} catch (error) {
+		console.log("Error getting last updated date from db {0}", error);
 	}
 };
