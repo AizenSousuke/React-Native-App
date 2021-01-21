@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "react-native";
 import { View, Text, RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { getData } from "../api/api";
+import { BusStopTableCheck, getData, getLastUpdatedDate, storeData } from "../api/api";
 import BusStopList from "../components/BusStopList";
 
 const GoingOut = () => {
@@ -34,6 +35,10 @@ const GoingOut = () => {
 		>
 			{data != null ? <Text>{JSON.stringify(data)}</Text> : <Text>No data: {JSON.stringify(data)}</Text>}
 			{/* <BusStopList /> */}
+			<Button title="Get last updated date" onPress={() => getLastUpdatedDate()} />
+			<Button title="Get data" onPress={() => getData()} />
+			<Button title="Check DB Table" onPress={() => BusStopTableCheck()} />
+			<Button title="Store data" onPress={() => storeData("data")} />
 		</ScrollView>
 	);
 };

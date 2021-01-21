@@ -2,7 +2,7 @@ import * as secrets from "../../secrets.json";
 import axios from "axios";
 import * as SQLite from "expo-sqlite";
 
-const databaseName = databaseName;
+const databaseName = "sgbus.db";
 const apiKey = secrets.apiKey;
 const header = {
 	AccountKey: apiKey,
@@ -180,8 +180,8 @@ export const getLastUpdatedDate = () => {
 	try {
 		var data = null;
 		var db = SQLite.openDatabase(databaseName);
-		db.readTransaction(
-			() =>
+		db.transaction(
+			(tx) =>
 				tx.executeSql(
 					`
 			SELECT LastUpdatedDate FROM BusStopList
