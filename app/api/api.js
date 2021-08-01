@@ -2,8 +2,21 @@ import * as secrets from "../../secrets.json";
 import axios from "axios";
 import * as SQLite from "expo-sqlite";
 
+/**
+ * Store the bus stops here
+ */
 const databaseName = "sgbus.db";
+/**
+ * Store user settings here
+ */
+const settingsDatabaseName = "settings.db";
+/**
+ * Api key to be provided from a secrets.json file
+ */
 const apiKey = secrets.apiKey;
+/**
+ * Headers to be set for the requests
+ */
 const header = {
 	AccountKey: apiKey,
 	Accept: "application/json",
@@ -56,23 +69,30 @@ export const getAllBusStops = async () => {
 /**
  * Create Bus Stop Table if it doesn't exists
  */
-export const BusStopTableCheck = (tx) => {
-	console.log("Creating if Bus Stop Table exists.");
-	tx.executeSql(
-		`
-		CREATE TABLE IF NOT EXISTS BusStopList (
-			Id INTEGER PRIMARY KEY AUTOINCREMENT,
-			Data nvarchar(255) NULL,
-			LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
-		);`,
-		[],
-		() => {
-			console.log("Success");
-		},
-		(err) => {
-			console.log("Error: {0}", err);
-		}
-	);
+export const BusStopTableCheck = () => {
+	var db = SQLite.openDatabase(databaseName);
+	db.transaction((tx) => {
+		tx.executeSql(
+			`
+			CREATE TABLE IF NOT EXISTS BusStopList (
+				Id INTEGER PRIMARY KEY AUTOINCREMENT,
+				Data nvarchar(255) NULL,
+				LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
+			);
+
+			insert into BusStopList (Id, Data, LastUpdated) values (1, 'data', CURRENT_TIMESTAMP);
+
+			SELECT * FROM BusStopList;
+			`,
+			[],
+			(res, result) => {
+				console.log("Success: %s", result.rows);
+			},
+			(err) => {
+				console.log("Error: %s", err);
+			}
+		);
+	});
 };
 
 /**
@@ -166,7 +186,7 @@ export const getData = async (value = null) => {
 			}
 		);
 		console.log("Data: " + JSON.stringify(data));
-		return data;
+		return await data;
 	} catch (error) {
 		console.log("Get Data Error: " + error);
 	}
@@ -184,12 +204,14 @@ export const getLastUpdatedDate = () => {
 			(tx) =>
 				tx.executeSql(
 					`
-			SELECT LastUpdatedDate FROM BusStopList
-			ORDER BY LastUpdatedDate desc
+			SELECT LastUpdated 
+			FROM BusStopList
+			ORDER BY LastUpdated DESC
 		`,
 					[],
 					(tx, res) => {
 						data = res;
+						console.log("Last updated date: ", data.rows.item(0).LastUpdated);
 						return data;
 					},
 					(err) => console.log("Error executing sql {0}", err)

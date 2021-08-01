@@ -8,6 +8,7 @@ import BusStopList from "../components/BusStopList";
 const GoingOut = () => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [data, setdata] = useState(null);
+	const [sampleText, setsampleText] = useState("Amet quis esse ad do reprehenderit ad qui commodo reprehenderit sint ex ullamco exercitation elit.");
 	useEffect(() => {
 		// getData().then((data) => {
 		// 	setdata(data);
@@ -35,8 +36,9 @@ const GoingOut = () => {
 		>
 			{data != null ? <Text>{JSON.stringify(data)}</Text> : <Text>No data: {JSON.stringify(data)}</Text>}
 			{/* <BusStopList /> */}
+			<Text>{sampleText}</Text>
 			<Button title="Get last updated date" onPress={() => getLastUpdatedDate()} />
-			<Button title="Get data" onPress={() => getData()} />
+			<Button title="Get data" onPress={() => getData().then(res => setsampleText(res))} />
 			<Button title="Check DB Table" onPress={() => BusStopTableCheck()} />
 			<Button title="Store data" onPress={() => storeData("data")} />
 		</ScrollView>
