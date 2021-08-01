@@ -29,6 +29,8 @@ const dataKey = {
 	GoingBack: "GoingBack",
 };
 
+var db = SQLite.openDatabase(databaseName);
+
 export const getBusArrival = async (code, serviceNumber = null) => {
 	var data = await axios
 		.get(BusArrivalURL, {
@@ -70,7 +72,6 @@ export const getAllBusStops = async () => {
  * Create Bus Stop Table if it doesn't exists
  */
 export const BusStopTableCheck = () => {
-	var db = SQLite.openDatabase(databaseName);
 	db.transaction((tx) => {
 		tx.executeSql(
 			`
@@ -80,13 +81,21 @@ export const BusStopTableCheck = () => {
 				LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
 			);
 
-			insert into BusStopList (Id, Data, LastUpdated) values (1, 'data', CURRENT_TIMESTAMP);
+			-- insert into BusStopList (Id, Data, LastUpdated) values (1, 'data', CURRENT_TIMESTAMP);
 
-			SELECT * FROM BusStopList;
 			`,
 			[],
 			(res, result) => {
-				console.log("Success: %s", result.rows);
+				console.log("Success: %s", result);
+				tx.executeSql(`
+					SELECT * FROM BusStopList;
+				`, 
+				[],
+				(res, result) => {
+					result.rows._array.forEach(item => {
+						console.log("Items: %s", item);
+					})
+				})
 			},
 			(err) => {
 				console.log("Error: %s", err);
@@ -101,7 +110,6 @@ export const BusStopTableCheck = () => {
  */
 export const storeData = async (value) => {
 	try {
-		var db = SQLite.openDatabase(databaseName);
 		db.transaction(
 			(tx) => {
 				// tx.executeSql(`
@@ -142,19 +150,20 @@ export const storeData = async (value) => {
 export const getData = async (value = null) => {
 	try {
 		var data = null;
-		var db = SQLite.openDatabase(databaseName);
 		db.transaction(
 			(tx) => {
 				if (value == null) {
 					console.log("Value provided is null");
 					tx.executeSql(
 						`
-						SELECT Data FROM BusStopList
+						SELECT Data FROM BusStopList;
 					`,
 						[],
 						(tx, res) => {
-							console.log("Value: " + JSON.stringify(value));
-							console.log("Res: " + JSON.stringify(res));
+							// res.rows._array.forEach(item => {
+							// 	console.log("Items: %s", item);
+							// })
+							console.log("Data: %s", JSON.stringify(res.rows._array, null, '\t'));
 							data = res;
 							return data;
 						}
@@ -164,10 +173,13 @@ export const getData = async (value = null) => {
 						`
 						SELECT Data FROM BusStopList
 						WHERE 
-							Data LIKE '%' + ? + '%'
+							Data LIKE '%' + ? + '%';
 					`,
 						[value],
 						(tx, res) => {
+							res.rows._array.forEach(item => {
+								console.log("Items: %s", item);
+							})
 							console.log("Value: " + JSON.stringify(value));
 							console.log("Res: " + JSON.stringify(res));
 							data = res;
@@ -199,17 +211,19 @@ export const getData = async (value = null) => {
 export const getLastUpdatedDate = () => {
 	try {
 		var data = null;
-		var db = SQLite.openDatabase(databaseName);
 		db.transaction(
 			(tx) =>
 				tx.executeSql(
 					`
-			SELECT LastUpdated 
-			FROM BusStopList
-			ORDER BY LastUpdated DESC
-		`,
+						SELECT LastUpdated 
+						FROM BusStopList
+						ORDER BY LastUpdated DESC
+					`,
 					[],
 					(tx, res) => {
+						res.rows._array.forEach(item => {
+							console.log("Items: %s", item);
+						})
 						data = res;
 						console.log("Last updated date: ", data.rows.item(0).LastUpdated);
 						return data;
