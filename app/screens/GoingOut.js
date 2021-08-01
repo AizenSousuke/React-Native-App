@@ -54,7 +54,7 @@ const GoingOut = () => {
 			/>
 			<Button
 				title="Get data"
-				onPress={() => getData().then((res) => setsampleText(res))}
+				onPress={() => getData().then((res) => setSampleText(res))}
 			/>
 			<Button
 				title="Check DB Table"

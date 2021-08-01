@@ -252,3 +252,21 @@ export const getLastUpdatedDate = () => {
 		console.log("Error getting last updated date from db {0}", error);
 	}
 };
+
+// Sample function
+export const SampleFunctionThatReturnsSomething = (param) => {
+	return new Promise((resolve, reject) => {
+		db.transaction((tx) => {
+			tx.executeSql(
+				`SQL STATEMENT`,
+				[parameters],
+				(transaction, resultSet) => {
+					resolve(resultSet);
+				},
+				(transaction, error) => {
+					reject(error);
+				}
+			)
+		})
+	});
+};
