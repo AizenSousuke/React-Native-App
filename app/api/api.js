@@ -72,35 +72,44 @@ export const getAllBusStops = async () => {
  * Create Bus Stop Table if it doesn't exists
  */
 export const BusStopTableCheck = () => {
-	db.transaction((tx) => {
-		tx.executeSql(
-			`
-			CREATE TABLE IF NOT EXISTS BusStopList (
-				Id INTEGER PRIMARY KEY AUTOINCREMENT,
-				Data nvarchar(255) NULL,
-				LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
-			);
-
-			-- insert into BusStopList (Id, Data, LastUpdated) values (1, 'data', CURRENT_TIMESTAMP);
-
-			`,
-			[],
-			(res, result) => {
-				console.log("Success: %s", result);
-				tx.executeSql(`
-					SELECT * FROM BusStopList;
-				`, 
+	return new Promise((resolve, reject) => {
+		db.transaction((tx) => {
+			tx.executeSql(
+				`
+				CREATE TABLE IF NOT EXISTS BusStopList (
+					Id INTEGER PRIMARY KEY AUTOINCREMENT,
+					Data nvarchar(255) NULL,
+					LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
+				);
+	
+				-- insert into BusStopList (Id, Data, LastUpdated) values (1, 'data', CURRENT_TIMESTAMP);
+	
+				`,
 				[],
 				(res, result) => {
-					result.rows._array.forEach(item => {
-						console.log("Items: %s", item);
-					})
-				})
-			},
-			(err) => {
-				console.log("Error: %s", err);
-			}
-		);
+					console.log("Success: %s", result);
+					tx.executeSql(
+						`
+						SELECT * FROM BusStopList;
+					`,
+						[],
+						(res, result) => {
+							result.rows._array.forEach((item) => {
+								console.log("Items: %s", item);
+							});
+
+							resolve(
+								JSON.stringify(result.rows._array, null, "\t")
+							);
+						}
+					);
+				},
+				(err) => {
+					console.log("Error: %s", err);
+					reject(null);
+				}
+			);
+		});
 	});
 };
 
@@ -163,7 +172,10 @@ export const getData = async (value = null) => {
 							// res.rows._array.forEach(item => {
 							// 	console.log("Items: %s", item);
 							// })
-							console.log("Data: %s", JSON.stringify(res.rows._array, null, '\t'));
+							console.log(
+								"Data: %s",
+								JSON.stringify(res.rows._array, null, "\t")
+							);
 							data = res;
 							return data;
 						}
@@ -177,9 +189,9 @@ export const getData = async (value = null) => {
 					`,
 						[value],
 						(tx, res) => {
-							res.rows._array.forEach(item => {
+							res.rows._array.forEach((item) => {
 								console.log("Items: %s", item);
-							})
+							});
 							console.log("Value: " + JSON.stringify(value));
 							console.log("Res: " + JSON.stringify(res));
 							data = res;
@@ -221,11 +233,14 @@ export const getLastUpdatedDate = () => {
 					`,
 					[],
 					(tx, res) => {
-						res.rows._array.forEach(item => {
+						res.rows._array.forEach((item) => {
 							console.log("Items: %s", item);
-						})
+						});
 						data = res;
-						console.log("Last updated date: ", data.rows.item(0).LastUpdated);
+						console.log(
+							"Last updated date: ",
+							data.rows.item(0).LastUpdated
+						);
 						return data;
 					},
 					(err) => console.log("Error executing sql {0}", err)
