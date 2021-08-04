@@ -87,16 +87,16 @@ export const BusStopTableCheck = () => {
 				`,
 				[],
 				(res, result) => {
-					console.log("Success: %s", result);
+					// console.log("Success: %s", result);
 					tx.executeSql(
 						`
 						SELECT * FROM BusStopList;
 					`,
 						[],
 						(res, result) => {
-							result.rows._array.forEach((item) => {
-								console.log("Items: %s", item);
-							});
+							// result.rows._array.forEach((item) => {
+							// 	console.log("Items: %s", item);
+							// });
 
 							resolve(
 								JSON.stringify(result.rows._array, null, "\t")
@@ -203,11 +203,11 @@ export const getData = (value = null) => {
 						`,
 							[value],
 							(tx, res) => {
-								res.rows._array.forEach((item) => {
-									console.log("Items: %s", item);
-								});
-								console.log("Value: " + JSON.stringify(value));
-								console.log("Res: " + JSON.stringify(res));
+								// res.rows._array.forEach((item) => {
+								// 	console.log("Items: %s", item);
+								// });
+								// console.log("Value: " + JSON.stringify(value));
+								// console.log("Res: " + JSON.stringify(res));
 								resolve(res);
 							},
 							(err) => {
@@ -253,10 +253,10 @@ export const getLastUpdatedDate = () => {
 						[],
 						(tx, res) => {
 							if (res.rows._array.length > 0) {
-								console.log(
-									"Last updated date: ",
-									res.rows.item(0).LastUpdated
-								);
+								// console.log(
+								// 	"Last updated date: ",
+								// 	res.rows.item(0).LastUpdated
+								// );
 								resolve(res.rows.item(0).LastUpdated);
 							} else {
 								resolve(null);

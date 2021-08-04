@@ -37,7 +37,7 @@ const GoingOut = () => {
 			}
 		>
 			{sampleText != null ? (
-				<Text>{sampleText}</Text>
+				<Text>{sampleText.slice(0, 10000)}</Text>
 			) : (
 				<Text>No data: {sampleText}</Text>
 			)}
