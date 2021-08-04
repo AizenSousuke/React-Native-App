@@ -20,7 +20,6 @@ const apiKey = secrets.apiKey;
 const header = {
 	AccountKey: apiKey,
 	Accept: "application/json",
-	maxContentLength: 99999999,
 };
 var BusArrivalURL =
 	"http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
@@ -102,6 +101,10 @@ export const BusStopTableCheck = () => {
 							resolve(
 								JSON.stringify(result.rows._array, null, "\t")
 							);
+						},
+						(err) => {
+							console.log("Error: %s", err);
+							reject(null);
 						}
 					);
 				},
@@ -249,15 +252,15 @@ export const getLastUpdatedDate = () => {
 						`,
 						[],
 						(tx, res) => {
-							res.rows._array.forEach((item) => {
-								console.log("Items: %s", item);
-							});
-							var data = res;
-							console.log(
-								"Last updated date: ",
-								data.rows.item(0).LastUpdated
-							);
-							resolve(data.rows.item(0).LastUpdated);
+							if (res.rows._array.length > 0) {
+								console.log(
+									"Last updated date: ",
+									res.rows.item(0).LastUpdated
+								);
+								resolve(res.rows.item(0).LastUpdated);
+							} else {
+								resolve(null);
+							}
 						},
 						(err) => {
 							console.log("Error executing sql {0}", err);
@@ -268,7 +271,14 @@ export const getLastUpdatedDate = () => {
 					console.log("Error reading transaction {0}", err);
 					reject(null);
 				},
-				() => console.log("Successfully read transaction")
+				() => {
+					console.log("Successfully read transaction");
+					resolve(null);
+				},
+				(err) => {
+					console.log("Error %s", err);
+					reject(null);
+				}
 			);
 		});
 	} catch (error) {
