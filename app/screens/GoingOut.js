@@ -4,6 +4,7 @@ import { View, Text, RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
 	BusStopTableCheck,
+	DeleteBusStopList,
 	getData,
 	getLastUpdatedDate,
 	storeData,
@@ -22,15 +23,15 @@ const GoingOut = () => {
 				<RefreshControl
 					refreshing={refreshing}
 					onRefresh={() => {
-						setRefreshing(true);
-						getData()
-							.then((data) => {
-								console.log("Data: " + JSON.stringify(data));
-								setSampleText(JSON.stringify(data));
-								console.log("Refreshed");
-								setRefreshing(false);
-							})
-							.catch((error) => console.log(error));
+						// setRefreshing(true);
+						// getData()
+						// 	.then((data) => {
+						// 		console.log("Data: " + JSON.stringify(data));
+						// 		setSampleText(JSON.stringify(data));
+						// 		console.log("Refreshed");
+						// 		setRefreshing(false);
+						// 	})
+						// 	.catch((error) => console.log(error));
 					}}
 				></RefreshControl>
 			}
@@ -59,7 +60,8 @@ const GoingOut = () => {
 					})
 				}
 			/>
-			<Button title="Store data" onPress={() => storeData("data")} />
+			<Button title="Store data" onPress={() => storeData("Lorem ipsum")} />
+			<Button title="Delete data" onPress={() => DeleteBusStopList().then((() => setSampleText("Deleted data")), () => setSampleText("Error"))} />
 		</ScrollView>
 	);
 };

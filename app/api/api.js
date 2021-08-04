@@ -20,6 +20,7 @@ const apiKey = secrets.apiKey;
 const header = {
 	AccountKey: apiKey,
 	Accept: "application/json",
+	maxContentLength: 99999999,
 };
 var BusArrivalURL =
 	"http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
@@ -137,10 +138,10 @@ export const storeData = (value) => {
 							?
 						)
 					`,
-						[JSON.stringify(value)],
+						[JSON.stringify(value, null, "\t")],
 						(tx, res) => {
-							console.log("Value: " + JSON.stringify(value));
-							console.log("Res: " + JSON.stringify(res));
+							// console.log("Value: " + JSON.stringify(value));
+							// console.log("Res: " + JSON.stringify(res));
 							resolve(true);
 						}
 					);
@@ -179,10 +180,10 @@ export const getData = (value = null) => {
 								// res.rows._array.forEach(item => {
 								// 	console.log("Items: %s", item);
 								// })
-								console.log(
-									"Data: %s",
-									JSON.stringify(res.rows._array, null, "\t")
-								);
+								// console.log(
+								// 	"Data: %s",
+								// 	JSON.stringify(res.rows._array, null, "\t")
+								// );
 								resolve(res);
 							},
 							(err) => {
@@ -273,6 +274,29 @@ export const getLastUpdatedDate = () => {
 	} catch (error) {
 		console.log("Error getting last updated date from db {0}", error);
 	}
+};
+
+export const DeleteBusStopList = () => {
+	try {
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) =>
+				tx.executeSql(
+					`
+					DELETE FROM BusStopList WHERE Data NOT NULL
+					`,
+					[],
+					(res) => {
+						console.log("Deleted items from table");
+						resolve(true);
+					},
+					(err) => {
+						console.log("Error deleting items from table ", err);
+						reject(false);
+					}
+				)
+			);
+		});
+	} catch (error) {}
 };
 
 // Sample function
