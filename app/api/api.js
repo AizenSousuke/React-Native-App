@@ -116,37 +116,44 @@ export const BusStopTableCheck = () => {
 /**
  * Stores a data into Bus Stop List Table
  * @param {any} value Data to store
+ * @returns true if data is successfully saved
  */
-export const storeData = async (value) => {
+export const storeData = (value) => {
 	try {
-		db.transaction(
-			(tx) => {
-				// tx.executeSql(`
-				// DROP TABLE BusStopList
-				// `);
+		return new Promise((resolve, reject) => {
+			db.transaction(
+				(tx) => {
+					// tx.executeSql(`
+					// DROP TABLE BusStopList
+					// `);
 
-				BusStopTableCheck(tx);
+					BusStopTableCheck(tx);
 
-				tx.executeSql(
-					`
-					INSERT INTO BusStopList (
-						Data
-					) VALUES (
-						?
-					)
-				`,
-					[JSON.stringify(value)],
-					(tx, res) => {
-						console.log("Value: " + JSON.stringify(value));
-						console.log("Res: " + JSON.stringify(res));
-					}
-				);
-			},
-			(err) => console.error("Error in storing to SQLite " + err.message),
-			() => {
-				console.log("Successfully stored data in SQLite");
-			}
-		);
+					tx.executeSql(
+						`
+						INSERT INTO BusStopList (
+							Data
+						) VALUES (
+							?
+						)
+					`,
+						[JSON.stringify(value)],
+						(tx, res) => {
+							console.log("Value: " + JSON.stringify(value));
+							console.log("Res: " + JSON.stringify(res));
+							resolve(true);
+						}
+					);
+				},
+				(err) => {
+					console.error("Error in storing to SQLite " + err.message);
+					reject(false);
+				},
+				() => {
+					console.log("Successfully stored data in SQLite");
+				}
+			);
+		});
 	} catch (error) {
 		console.log("Saving Error: " + error);
 	}
@@ -156,61 +163,69 @@ export const storeData = async (value) => {
  * Get data from the Database
  * @param {string} value If value is provided, it will search the SQL table for that value
  */
-export const getData = async (value = null) => {
+export const getData = (value = null) => {
 	try {
-		var data = null;
-		db.transaction(
-			(tx) => {
-				if (value == null) {
-					console.log("Value provided is null");
-					tx.executeSql(
-						`
-						SELECT Data FROM BusStopList;
-					`,
-						[],
-						(tx, res) => {
-							// res.rows._array.forEach(item => {
-							// 	console.log("Items: %s", item);
-							// })
-							console.log(
-								"Data: %s",
-								JSON.stringify(res.rows._array, null, "\t")
-							);
-							data = res;
-							return data;
-						}
+		return new Promise((resolve, reject) => {
+			db.transaction(
+				(tx) => {
+					if (value == null) {
+						console.log("Value provided is null");
+						tx.executeSql(
+							`
+							SELECT Data FROM BusStopList;
+						`,
+							[],
+							(tx, res) => {
+								// res.rows._array.forEach(item => {
+								// 	console.log("Items: %s", item);
+								// })
+								console.log(
+									"Data: %s",
+									JSON.stringify(res.rows._array, null, "\t")
+								);
+								resolve(res);
+							},
+							(err) => {
+								console.log("Error getting data ", err);
+								reject(null);
+							}
+						);
+					} else {
+						tx.executeSql(
+							`
+							SELECT Data FROM BusStopList
+							WHERE 
+								Data LIKE '%' + ? + '%';
+						`,
+							[value],
+							(tx, res) => {
+								res.rows._array.forEach((item) => {
+									console.log("Items: %s", item);
+								});
+								console.log("Value: " + JSON.stringify(value));
+								console.log("Res: " + JSON.stringify(res));
+								resolve(res);
+							},
+							(err) => {
+								console.log(
+									"Error getting filtered data ",
+									err
+								);
+								reject(null);
+							}
+						);
+					}
+				},
+				(err) => {
+					console.error(
+						"Error in getting data from SQLite " + err.message
 					);
-				} else {
-					tx.executeSql(
-						`
-						SELECT Data FROM BusStopList
-						WHERE 
-							Data LIKE '%' + ? + '%';
-					`,
-						[value],
-						(tx, res) => {
-							res.rows._array.forEach((item) => {
-								console.log("Items: %s", item);
-							});
-							console.log("Value: " + JSON.stringify(value));
-							console.log("Res: " + JSON.stringify(res));
-							data = res;
-							return data;
-						}
-					);
+				},
+				() => {
+					console.log("Successfully read data from SQLite");
 				}
-			},
-			(err) => {
-				console.error(
-					"Error in getting data from SQLite " + err.message
-				);
-			},
-			() => {
-				console.log("Successfully read data from SQLite");
-			}
-		);
-		console.log("Data: " + JSON.stringify(data));
-		return await data;
+			);
+		});
 	} catch (error) {
 		console.log("Get Data Error: " + error);
 	}
@@ -222,32 +237,39 @@ export const getData = async (value = null) => {
  */
 export const getLastUpdatedDate = () => {
 	try {
-		var data = null;
-		db.transaction(
-			(tx) =>
-				tx.executeSql(
-					`
-						SELECT LastUpdated 
-						FROM BusStopList
-						ORDER BY LastUpdated DESC
-					`,
-					[],
-					(tx, res) => {
-						res.rows._array.forEach((item) => {
-							console.log("Items: %s", item);
-						});
-						data = res;
-						console.log(
-							"Last updated date: ",
-							data.rows.item(0).LastUpdated
-						);
-						return data;
-					},
-					(err) => console.log("Error executing sql {0}", err)
-				),
-			(err) => console.log("Error reading transaction {0}", err),
-			() => console.log("Successfully read transaction")
-		);
+		return new Promise((resolve, reject) => {
+			db.transaction(
+				(tx) =>
+					tx.executeSql(
+						`
+							SELECT LastUpdated 
+							FROM BusStopList
+							ORDER BY LastUpdated DESC
+						`,
+						[],
+						(tx, res) => {
+							res.rows._array.forEach((item) => {
+								console.log("Items: %s", item);
+							});
+							var data = res;
+							console.log(
+								"Last updated date: ",
+								data.rows.item(0).LastUpdated
+							);
+							resolve(data.rows.item(0).LastUpdated);
+						},
+						(err) => {
+							console.log("Error executing sql {0}", err);
+							reject(null);
+						}
+					),
+				(err) => {
+					console.log("Error reading transaction {0}", err);
+					reject(null);
+				},
+				() => console.log("Successfully read transaction")
+			);
+		});
 	} catch (error) {
 		console.log("Error getting last updated date from db {0}", error);
 	}
@@ -266,7 +288,7 @@ export const SampleFunctionThatReturnsSomething = (param) => {
 				(transaction, error) => {
 					reject(error);
 				}
-			)
-		})
+			);
+		});
 	});
 };

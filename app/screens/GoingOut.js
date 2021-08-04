@@ -12,16 +12,10 @@ import BusStopList from "../components/BusStopList";
 
 const GoingOut = () => {
 	const [refreshing, setRefreshing] = useState(false);
-	const [data, setdata] = useState(null);
 	const [sampleText, setSampleText] = useState(
 		"Amet quis esse ad do reprehenderit ad qui commodo reprehenderit sint ex ullamco exercitation elit."
 	);
-	useEffect(() => {
-		// getData().then((data) => {
-		// 	setdata(data);
-		// 	console.log("Data: " + data);
-		// });
-	}, []);
+	useEffect(() => {}, []);
 	return (
 		<ScrollView
 			refreshControl={
@@ -32,7 +26,7 @@ const GoingOut = () => {
 						getData()
 							.then((data) => {
 								console.log("Data: " + JSON.stringify(data));
-								setdata(data);
+								setSampleText(JSON.stringify(data));
 								console.log("Refreshed");
 								setRefreshing(false);
 							})
@@ -41,20 +35,21 @@ const GoingOut = () => {
 				></RefreshControl>
 			}
 		>
-			{data != null ? (
-				<Text>{JSON.stringify(data)}</Text>
+			{sampleText != null ? (
+				<Text>{sampleText}</Text>
 			) : (
-				<Text>No data: {JSON.stringify(data)}</Text>
+				<Text>No data: {sampleText}</Text>
 			)}
 			{/* <BusStopList /> */}
-			<Text>{sampleText}</Text>
 			<Button
 				title="Get last updated date"
-				onPress={() => getLastUpdatedDate()}
+				onPress={() =>
+					getLastUpdatedDate().then((res) => setSampleText(res))
+				}
 			/>
 			<Button
 				title="Get data"
-				onPress={() => getData().then((res) => setSampleText(res))}
+				onPress={() => getData().then((res) => setSampleText(JSON.stringify(res)))}
 			/>
 			<Button
 				title="Check DB Table"
