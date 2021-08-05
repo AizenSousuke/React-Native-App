@@ -28,71 +28,87 @@ const Search = () => {
 		// Search for bus stops
 		if (search.length >= searchLength) {
 			setSearching(true);
-			// 5042 records available
-			var arrayOfBusStops = [];
-			var arrayOfPromises = [];
-			for (
-				var pageSearched = 0;
-				pageSearched < pageSearchLength;
-				pageSearched++
-			) {
-				arrayOfPromises.push(
-					getBusStops(pageSearched)
-						.then((res) => res.value)
-						.catch((err) => console.log(err))
-				);
-			}
 
-			Promise.all(arrayOfPromises)
-				.then((res) => {
-					res.map((busStop) => {
-						busStop.forEach((stop) => arrayOfBusStops.push(stop));
-						// console.log(arrayOfBusStops.length);
-					});
-
-					// arrayOfBusStops is the list of all the bus stops
-					getData()
-						.then((b) => {
-							console.log(
-								"Get all bus stops length: " + JSON.stringify(b)
-							);
-							// if (b.length == 0) {
-							// 	arrayOfBusStops.forEach(stop => {
-							// 		storeData(JSON.stringify(stop));
-							// 	});
-							// }
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-
-					// Save the results into DB
-					// arrayOfBusStops.forEach((busStop) => {
-					// 	storeData(busStop);
-					// });
-
-					var results = arrayOfBusStops
-						.filter(
-							(busstop) =>
-								busstop.Description.toLowerCase().includes(
-									search
-								) ||
-								busstop.RoadName.toLowerCase().includes(
-									search
-								) ||
-								busstop.BusStopCode.toLowerCase().includes(
-									search
-								)
-						)
-						.slice(0, limitResults);
-					console.log("Result size: " + results.length);
-					setbusStops(results);
-				})
-				.catch((err) => console.log(err))
-				.then(() => {
-					console.log("Done getting all bus stops");
+			// Check if there's data in the db table
+			getData().then((res) => {
+				if (res[0].Data != null) {
+					console.log("There's data in the db");
+					console.log(JSON.parse(res[0].Data).length + " items loaded from db");
+					setbusStops(
+						JSON.parse(res[0].Data)
+							.filter(
+								(busstop) =>
+									busstop.Description.toLowerCase().includes(
+										search
+									) ||
+									busstop.RoadName.toLowerCase().includes(
+										search
+									) ||
+									busstop.BusStopCode.toLowerCase().includes(
+										search
+									)
+							)
+							.slice(0, limitResults)
+					);
 					setSearching(false);
-				});
+				} else {
+					console.warn("There's no data in the db");
+
+					// 5042 records available
+					var arrayOfBusStops = [];
+					var arrayOfPromises = [];
+					for (
+						var pageSearched = 0;
+						pageSearched < pageSearchLength;
+						pageSearched++
+					) {
+						arrayOfPromises.push(
+							getBusStops(pageSearched)
+								.then((res) => res.value)
+								.catch((err) => console.log(err))
+						);
+					}
+
+					Promise.all(arrayOfPromises)
+						.then((res) => {
+							res.map((busStop) => {
+								busStop.forEach((stop) =>
+									arrayOfBusStops.push(stop)
+								);
+							});
+
+							// arrayOfBusStops is the list of all the bus stops
+
+							// Save the results into DB
+							// arrayOfBusStops.forEach((busStop) => {
+							// 	storeData(busStop);
+							// });
+							storeData(arrayOfBusStops);
+
+							var results = arrayOfBusStops
+								.filter(
+									(busstop) =>
+										busstop.Description.toLowerCase().includes(
+											search
+										) ||
+										busstop.RoadName.toLowerCase().includes(
+											search
+										) ||
+										busstop.BusStopCode.toLowerCase().includes(
+											search
+										)
+								)
+								.slice(0, limitResults);
+							console.log("Result size: " + results.length);
+							setbusStops(results);
+						})
+						.catch((err) => console.log(err))
+						.then(() => {
+							console.log("Done getting all bus stops");
+							setSearching(false);
+						});
+				}
+			});
 		}
 	};
 

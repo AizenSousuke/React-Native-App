@@ -141,7 +141,7 @@ export const storeData = (value) => {
 							?
 						)
 					`,
-						[JSON.stringify(value, null, "\t")],
+						[JSON.stringify(value)],
 						(tx, res) => {
 							// console.log("Value: " + JSON.stringify(value));
 							// console.log("Res: " + JSON.stringify(res));
@@ -187,7 +187,7 @@ export const getData = (value = null) => {
 								// 	"Data: %s",
 								// 	JSON.stringify(res.rows._array, null, "\t")
 								// );
-								resolve(res);
+								resolve(res.rows._array);
 							},
 							(err) => {
 								console.log("Error getting data ", err);
@@ -208,7 +208,7 @@ export const getData = (value = null) => {
 								// });
 								// console.log("Value: " + JSON.stringify(value));
 								// console.log("Res: " + JSON.stringify(res));
-								resolve(res);
+								resolve(res.rows._array);
 							},
 							(err) => {
 								console.log(
