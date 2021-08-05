@@ -31,7 +31,7 @@ const Search = () => {
 
 			// Check if there's data in the db table
 			getData().then((res) => {
-				if (res[0].Data != null) {
+				if (res[0] != null) {
 					console.log("There's data in the db");
 					console.log(JSON.parse(res[0].Data).length + " items loaded from db");
 					setbusStops(
