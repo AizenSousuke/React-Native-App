@@ -160,6 +160,7 @@ const Search = () => {
 					value={search.toString()}
 				/>
 			}
+			stickyHeaderIndices={[0]}
 			initialNumToRender={limitResultsPerPage}
 			maxToRenderPerBatch={limitResultsPerPage}
 			data={busStops}
