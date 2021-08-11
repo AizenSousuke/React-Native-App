@@ -1,19 +1,12 @@
-import { View, Text, ActivityIndicator, ToastAndroid } from "react-native";
-import React, { useState, useEffect } from "react";
-import { Header, ListItem, SearchBar } from "react-native-elements";
-import styles from "../../assets/css/AppStyles";
+import { ToastAndroid } from "react-native";
+import React, { useState } from "react";
+import { SearchBar } from "react-native-elements";
 import {
-	getAllBusStops,
-	getBusArrival,
 	getBusStops,
 	getData,
 	storeData,
 } from "../api/api";
-import BusDetails from "../components/BusDetails";
-import { ScrollView } from "react-native-gesture-handler";
-import BusStopList from "../components/BusStopList";
 import { FlatList } from "react-native";
-import { SafeAreaView } from "react-native";
 import BusStopListPureComponent from "../components/BusStopListPureComponent";
 
 const renderItem = ({ item }) => (
@@ -26,9 +19,6 @@ const renderItem = ({ item }) => (
 
 const Search = () => {
 	const [search, updateSearch] = useState("");
-	const [canSearch, setCanSearch] = useState(true);
-	const [searching, setSearching] = useState(false);
-	const [busService, setBusService] = useState([]);
 	const [busStops, setbusStops] = useState([]);
 	const searchLength = 1;
 	const pageSearchLength = 11;
@@ -39,7 +29,6 @@ const Search = () => {
 		console.log("Searching for bus stops");
 		// Search for bus stops
 		if (search.length >= searchLength) {
-			setSearching(true);
 
 			// Check if there's data in the db table
 			getData().then((res) => {
@@ -64,7 +53,6 @@ const Search = () => {
 							)
 							.slice(0, limitResults)
 					);
-					setSearching(false);
 					ToastAndroid.show("Search completed.", ToastAndroid.SHORT);
 				} else {
 					console.warn("There's no data in the db");
@@ -117,7 +105,6 @@ const Search = () => {
 						.catch((err) => console.log(err))
 						.then(() => {
 							console.log("Done getting all bus stops");
-							setSearching(false);
 							ToastAndroid.show(
 								"Search completed.",
 								ToastAndroid.SHORT
@@ -133,17 +120,12 @@ const Search = () => {
 		}
 	};
 
-	// useEffect(() => {}, [search]);
-
 	const viewabilityConfig = {
 		// itemVisiblePercentThreshold: 100,
 		minimumViewTime: 1000,
 	}
 
 	return (
-		// <View>
-		// 	<ScrollView>
-		// <SafeAreaView>
 		<FlatList
 			windowSize={2}
 			ListHeaderComponent={
@@ -168,40 +150,6 @@ const Search = () => {
 			keyExtractor={(item) => item.BusStopCode}
 			viewabilityConfig={viewabilityConfig}
 		/>
-		// </SafeAreaView>
-		// 		{busStops.length > 0 && !searching ? (
-		// 			busStops.map((stops, key) => {
-		// 				return (
-		// 					<BusStopList
-		// 						key={key}
-		// 						name={stops.Description}
-		// 						address={stops.RoadName}
-		// 						code={stops.BusStopCode}
-		// 					/>
-		// 				);
-		// 			})
-		// 		) : (
-		// 			<ListItem bottomDivider>
-		// 				<ListItem.Content>
-		// 					<ListItem.Title>
-		// 						{searching ? (
-		// 							<>
-		// 								Searching:
-		// 								<ActivityIndicator
-		// 									size={"small"}
-		// 									color={"black"}
-		// 									style={{ paddingLeft: 10 }}
-		// 								/>
-		// 							</>
-		// 						) : (
-		// 							<>No results</>
-		// 						)}
-		// 					</ListItem.Title>
-		// 				</ListItem.Content>
-		// 			</ListItem>
-		// 		)}
-		// 	</ScrollView>
-		// </View>
 	);
 };
 

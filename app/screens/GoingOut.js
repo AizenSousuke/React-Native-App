@@ -9,7 +9,7 @@ import {
 	getLastUpdatedDate,
 	storeData,
 } from "../api/api";
-import BusStopList from "../components/BusStopList";
+import BusStopListPureComponent from "../components/BusStopListPureComponent";
 
 const GoingOut = () => {
 	const [refreshing, setRefreshing] = useState(false);
@@ -41,7 +41,7 @@ const GoingOut = () => {
 			) : (
 				<Text>No data: {sampleText}</Text>
 			)}
-			{/* <BusStopList /> */}
+			{/* <BusStopListPureComponent /> */}
 			<Button
 				title="Get last updated date"
 				onPress={() =>
