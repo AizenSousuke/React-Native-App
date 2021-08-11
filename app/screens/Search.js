@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ToastAndroid } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Header, ListItem, SearchBar } from "react-native-elements";
 import styles from "../../assets/css/AppStyles";
@@ -12,6 +12,17 @@ import {
 import BusDetails from "../components/BusDetails";
 import { ScrollView } from "react-native-gesture-handler";
 import BusStopList from "../components/BusStopList";
+import { FlatList } from "react-native";
+import { SafeAreaView } from "react-native";
+import BusStopListPureComponent from "../components/BusStopListPureComponent";
+
+const renderItem = ({ item }) => (
+	<BusStopListPureComponent
+		name={item.Description}
+		address={item.RoadName}
+		code={item.BusStopCode}
+	/>
+);
 
 const Search = () => {
 	const [search, updateSearch] = useState("");
@@ -19,9 +30,10 @@ const Search = () => {
 	const [searching, setSearching] = useState(false);
 	const [busService, setBusService] = useState([]);
 	const [busStops, setbusStops] = useState([]);
-	const searchLength = 5;
+	const searchLength = 1;
 	const pageSearchLength = 11;
-	const limitResults = 20;
+	const limitResultsPerPage = 5;
+	const limitResults = 10;
 
 	const searchForBusStops = () => {
 		console.log("Searching for bus stops");
@@ -33,7 +45,9 @@ const Search = () => {
 			getData().then((res) => {
 				if (res[0] != null) {
 					console.log("There's data in the db");
-					console.log(JSON.parse(res[0].Data).length + " items loaded from db");
+					console.log(
+						JSON.parse(res[0].Data).length + " items loaded from db"
+					);
 					setbusStops(
 						JSON.parse(res[0].Data)
 							.filter(
@@ -51,6 +65,7 @@ const Search = () => {
 							.slice(0, limitResults)
 					);
 					setSearching(false);
+					ToastAndroid.show("Search completed.", ToastAndroid.SHORT);
 				} else {
 					console.warn("There's no data in the db");
 
@@ -80,9 +95,6 @@ const Search = () => {
 							// arrayOfBusStops is the list of all the bus stops
 
 							// Save the results into DB
-							// arrayOfBusStops.forEach((busStop) => {
-							// 	storeData(busStop);
-							// });
 							storeData(arrayOfBusStops);
 
 							var results = arrayOfBusStops
@@ -106,17 +118,35 @@ const Search = () => {
 						.then(() => {
 							console.log("Done getting all bus stops");
 							setSearching(false);
+							ToastAndroid.show(
+								"Search completed.",
+								ToastAndroid.SHORT
+							);
 						});
 				}
 			});
+		} else {
+			ToastAndroid.show(
+				"Enter at least 1 character.",
+				ToastAndroid.SHORT
+			);
 		}
 	};
 
-	useEffect(() => {}, [search]);
+	// useEffect(() => {}, [search]);
+
+	const viewabilityConfig = {
+		// itemVisiblePercentThreshold: 100,
+		minimumViewTime: 1000,
+	}
 
 	return (
-		<View>
-			<ScrollView>
+		// <View>
+		// 	<ScrollView>
+		// <SafeAreaView>
+		<FlatList
+			windowSize={2}
+			ListHeaderComponent={
 				<SearchBar
 					placeholder={"Search for a bus stop"}
 					onChangeText={(value) => {
@@ -129,39 +159,48 @@ const Search = () => {
 					}}
 					value={search.toString()}
 				/>
-				{busStops.length > 0 && !searching ? (
-					busStops.map((stops, key) => {
-						return (
-							<BusStopList
-								key={key}
-								name={stops.Description}
-								address={stops.RoadName}
-								code={stops.BusStopCode}
-							/>
-						);
-					})
-				) : (
-					<ListItem bottomDivider>
-						<ListItem.Content>
-							<ListItem.Title>
-								{searching ? (
-									<>
-										Searching:
-										<ActivityIndicator
-											size={"small"}
-											color={"black"}
-											style={{ paddingLeft: 10 }}
-										/>
-									</>
-								) : (
-									<>No results</>
-								)}
-							</ListItem.Title>
-						</ListItem.Content>
-					</ListItem>
-				)}
-			</ScrollView>
-		</View>
+			}
+			initialNumToRender={limitResultsPerPage}
+			maxToRenderPerBatch={limitResultsPerPage}
+			data={busStops}
+			renderItem={renderItem}
+			keyExtractor={(item) => item.BusStopCode}
+			viewabilityConfig={viewabilityConfig}
+		/>
+		// </SafeAreaView>
+		// 		{busStops.length > 0 && !searching ? (
+		// 			busStops.map((stops, key) => {
+		// 				return (
+		// 					<BusStopList
+		// 						key={key}
+		// 						name={stops.Description}
+		// 						address={stops.RoadName}
+		// 						code={stops.BusStopCode}
+		// 					/>
+		// 				);
+		// 			})
+		// 		) : (
+		// 			<ListItem bottomDivider>
+		// 				<ListItem.Content>
+		// 					<ListItem.Title>
+		// 						{searching ? (
+		// 							<>
+		// 								Searching:
+		// 								<ActivityIndicator
+		// 									size={"small"}
+		// 									color={"black"}
+		// 									style={{ paddingLeft: 10 }}
+		// 								/>
+		// 							</>
+		// 						) : (
+		// 							<>No results</>
+		// 						)}
+		// 					</ListItem.Title>
+		// 				</ListItem.Content>
+		// 			</ListItem>
+		// 		)}
+		// 	</ScrollView>
+		// </View>
 	);
 };
 

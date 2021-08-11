@@ -180,13 +180,6 @@ export const getData = (value = null) => {
 						`,
 							[],
 							(tx, res) => {
-								// res.rows._array.forEach(item => {
-								// 	console.log("Items: %s", item);
-								// })
-								// console.log(
-								// 	"Data: %s",
-								// 	JSON.stringify(res.rows._array, null, "\t")
-								// );
 								resolve(res.rows._array);
 							},
 							(err) => {

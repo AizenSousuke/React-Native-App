@@ -19,7 +19,7 @@ const BusStopList = ({ name, address, code }) => {
 				// setBusStopData((oldData) => ({...oldData, res}));
 				setBusStopData(res);
 				// console.log("Effect res: " + JSON.stringify(res));
-				console.log("Set new bus stop data due to a change in code.");
+				// console.log("Set new bus stop data due to a change in code.");
 			})
 			.catch((err) => console.log(err));
 	};
