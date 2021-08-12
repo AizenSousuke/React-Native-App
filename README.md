@@ -3,6 +3,16 @@
 yarn build
 ```
 
+# Devtools
+```
+react-devtools
+```
+
+# If error
+```
+Uninstall react-native-elements and reinstalling them.
+```
+
 # Todo:
 - Save all bus stops to database and set the last updated time
   - To compare the last updated time from the server\current time and if it is later than the one in DB, drop the db and repopulate it again based on the latest data. To use 1 week for now (update weekly).

@@ -4,9 +4,10 @@ import BusDetails from "./BusDetails";
 import styles from "../../assets/css/AppStyles";
 
 const BusStop = ({ busStopData }) => {
+	// console.log(JSON.stringify(busStopData.Services?.sort(a => a.ServiceNo)));
 	return (
 		<View style={styles.busStop}>
-			{busStopData.Services?.map((service, key) => {
+			{busStopData.Services?.sort(a => a.ServiceNo).map((service, key) => {
 				return (
 					<BusDetails
 						key={key}

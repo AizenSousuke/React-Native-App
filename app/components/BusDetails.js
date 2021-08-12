@@ -1,5 +1,5 @@
 import moment from "moment";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import * as Progress from "react-native-progress";
 import styles from "../../assets/css/AppStyles";
@@ -44,9 +44,18 @@ const GetEstimatedArrivalMinute = (estimatedArrivalTime) => {
 
 const BusDetails = ({ busNumber, details }) => {
 	// console.log("Details: " + JSON.stringify(details));
+
+	const [number, setNumber] = useState(busNumber);
+	const [data, setData] = useState(details);
+
+	useEffect(() => {
+		setNumber(busNumber);
+		setData(details);
+	}, [busNumber, details]);
+
 	return (
 		<View style={styles.busDetails}>
-			<Text style={[styles.busNumber, { flex: 0.2 }]}>{busNumber}</Text>
+			<Text style={[styles.busNumber, { flex: 0.2 }]}>{number}</Text>
 			<View
 				style={{
 					flex: 0.8,
@@ -55,21 +64,19 @@ const BusDetails = ({ busNumber, details }) => {
 				}}
 			>
 				<View style={{ flexDirection: "column" }}>
-					{details.NextBus.Load !== "" ? (
+					{data.NextBus.Load !== "" ? (
 						<>
 							<Text style={styles.busType}>
-								{details.NextBus.Type == "DD" ? "Double" : ""}
+								{data.NextBus.Type == "DD" ? "Double" : ""}
 							</Text>
 							<Progress.Bar
-								progress={GetValueForLoad(
-									details.NextBus.Load
-								)}
-								color={GetColorForLoad(details.NextBus.Load)}
+								progress={GetValueForLoad(data.NextBus.Load)}
+								color={GetColorForLoad(data.NextBus.Load)}
 								width={50}
 							/>
 							<Text style={styles.estimatedArrival}>
 								{GetEstimatedArrivalMinute(
-									details.NextBus.EstimatedArrival
+									data.NextBus.EstimatedArrival
 								).toString()}
 							</Text>
 						</>
@@ -78,21 +85,21 @@ const BusDetails = ({ busNumber, details }) => {
 					)}
 				</View>
 				<View style={{ flexDirection: "column" }}>
-					{details.NextBus2.Load !== "" ? (
+					{data.NextBus2.Load !== "" ? (
 						<>
 							<Text style={styles.busType}>
-								{details.NextBus2.Type == "DD" ? "Double" : ""}
+								{data.NextBus2.Type == "DD" ? "Double" : ""}
 							</Text>
 							<Progress.Bar
 								progress={GetValueForLoad(
-									details.NextBus2.Load
+									data.NextBus2.Load
 								)}
-								color={GetColorForLoad(details.NextBus2.Load)}
+								color={GetColorForLoad(data.NextBus2.Load)}
 								width={50}
 							/>
 							<Text style={styles.estimatedArrival}>
 								{GetEstimatedArrivalMinute(
-									details.NextBus2.EstimatedArrival
+									data.NextBus2.EstimatedArrival
 								).toString()}
 							</Text>
 						</>
@@ -101,21 +108,21 @@ const BusDetails = ({ busNumber, details }) => {
 					)}
 				</View>
 				<View style={{ flexDirection: "column" }}>
-					{details.NextBus3.Load !== "" ? (
+					{data.NextBus3.Load !== "" ? (
 						<>
 							<Text style={styles.busType}>
-								{details.NextBus2.Type == "DD" ? "Double" : ""}
+								{data.NextBus2.Type == "DD" ? "Double" : ""}
 							</Text>
 							<Progress.Bar
 								progress={GetValueForLoad(
-									details.NextBus3.Load
+									data.NextBus3.Load
 								)}
-								color={GetColorForLoad(details.NextBus3.Load)}
+								color={GetColorForLoad(data.NextBus3.Load)}
 								width={50}
 							/>
 							<Text style={styles.estimatedArrival}>
 								{GetEstimatedArrivalMinute(
-									details.NextBus3.EstimatedArrival
+									data.NextBus3.EstimatedArrival
 								).toString()}
 							</Text>
 						</>
