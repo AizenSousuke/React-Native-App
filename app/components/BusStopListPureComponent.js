@@ -23,9 +23,15 @@ export default class BusStopListPureComponent extends PureComponent {
 		getBusArrival(this.props.code)
 			.then((res) => {
 				this.setState(
-					() => ({ busStopData: res }),
+					(prevState) => {
+						return { ...prevState, busStopData: res };
+					},
 					() => {
-						console.log("Set bus stop data");
+						// console.log("Set bus stop data");
+						// console.log(
+						// 	"state " +
+						// 		JSON.stringify(this.state.busStopData.Services)
+						// );
 					}
 				);
 			})
@@ -143,6 +149,7 @@ export default class BusStopListPureComponent extends PureComponent {
 						</Pressable>
 					)}
 				</ListItem>
+				{/* <Text>{JSON.stringify(this.state.busStopData)}</Text> */}
 				<Collapsible collapsed={this.state.isCollapsed}>
 					{this.state.busStopData != null ? (
 						<BusStop busStopData={this.state.busStopData} />

@@ -75,7 +75,8 @@ export default StyleSheet.create({
 		color: "black",
 	},
 	busDetails: {
-		flex: 1,
+		// Disabled because it causes issues
+		// flex: 1,
 		flexDirection: "row",
 		backgroundColor: "white",
 		padding: 20,
