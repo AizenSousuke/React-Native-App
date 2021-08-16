@@ -1,13 +1,15 @@
 import { ToastAndroid } from "react-native";
 import React, { useState } from "react";
 import { SearchBar } from "react-native-elements";
-import {
-	getBusStops,
-	getData,
-	storeData,
-} from "../api/api";
+import { getBusStops, getData, storeData } from "../api/api";
 import { FlatList } from "react-native";
+import Fuse from "fuse.js";
 import BusStopListPureComponent from "../components/BusStopListPureComponent";
+
+const options = {
+	keys: ["BusStopCode", "RoadName"],
+	minMatchCharLength: 4,
+};
 
 const renderItem = ({ item }) => (
 	<BusStopListPureComponent
@@ -29,7 +31,6 @@ const Search = () => {
 		console.log("Searching for bus stops");
 		// Search for bus stops
 		if (search.length >= searchLength) {
-
 			// Check if there's data in the db table
 			getData().then((res) => {
 				if (res[0] != null) {
@@ -37,22 +38,35 @@ const Search = () => {
 					console.log(
 						JSON.parse(res[0].Data).length + " items loaded from db"
 					);
-					setbusStops(
-						JSON.parse(res[0].Data)
-							.filter(
-								(busstop) =>
-									busstop.Description.toLowerCase().includes(
-										search
-									) ||
-									busstop.RoadName.toLowerCase().includes(
-										search
-									) ||
-									busstop.BusStopCode.toLowerCase().includes(
-										search
-									)
-							)
-							.slice(0, limitResults)
+
+					// console.log(res[0].Data);
+					// console.log(Fuse);
+
+					options.minMatchCharLength = search.length;
+					const fuse = new Fuse(JSON.parse(res[0].Data), options);
+					const resultsArray = [];
+					fuse.search(search).forEach((s) =>
+						resultsArray.push(s.item)
 					);
+					setbusStops(resultsArray);
+
+					// setbusStops(
+					// 	JSON.parse(res[0].Data)
+					// 		.filter(
+					// 			(busstop) =>
+					// 				busstop.Description.toLowerCase().includes(
+					// 					search
+					// 				) ||
+					// 				busstop.RoadName.toLowerCase().includes(
+					// 					search
+					// 				) ||
+					// 				busstop.BusStopCode.toLowerCase().includes(
+					// 					search
+					// 				)
+					// 		)
+					// 		.slice(0, limitResults)
+					// );
+
 					ToastAndroid.show("Search completed.", ToastAndroid.SHORT);
 				} else {
 					console.warn("There's no data in the db");
@@ -85,22 +99,31 @@ const Search = () => {
 							// Save the results into DB
 							storeData(arrayOfBusStops);
 
-							var results = arrayOfBusStops
-								.filter(
-									(busstop) =>
-										busstop.Description.toLowerCase().includes(
-											search
-										) ||
-										busstop.RoadName.toLowerCase().includes(
-											search
-										) ||
-										busstop.BusStopCode.toLowerCase().includes(
-											search
-										)
-								)
-								.slice(0, limitResults);
-							console.log("Result size: " + results.length);
-							setbusStops(results);
+							options.minMatchCharLength = search.length;
+							const fuse = new Fuse(arrayOfBusStops, options);
+							const resultsArray = [];
+							fuse.search(search).forEach((s) =>
+								resultsArray.push(s.item)
+							);
+							setbusStops(resultsArray);
+
+							// var results = arrayOfBusStops
+							// 	.filter(
+							// 		(busstop) =>
+							// 			busstop.Description.toLowerCase().includes(
+							// 				search
+							// 			) ||
+							// 			busstop.RoadName.toLowerCase().includes(
+							// 				search
+							// 			) ||
+							// 			busstop.BusStopCode.toLowerCase().includes(
+							// 				search
+							// 			)
+							// 	)
+							// 	.slice(0, limitResults);
+
+							// console.log("Result size: " + results.length);
+							// setbusStops(results);
 						})
 						.catch((err) => console.log(err))
 						.then(() => {
@@ -123,7 +146,7 @@ const Search = () => {
 	const viewabilityConfig = {
 		// itemVisiblePercentThreshold: 100,
 		minimumViewTime: 1000,
-	}
+	};
 
 	return (
 		<FlatList
