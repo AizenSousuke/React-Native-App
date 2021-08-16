@@ -39,9 +39,6 @@ const Search = () => {
 						JSON.parse(res[0].Data).length + " items loaded from db"
 					);
 
-					// console.log(res[0].Data);
-					// console.log(Fuse);
-
 					options.minMatchCharLength = search.length;
 					const fuse = new Fuse(JSON.parse(res[0].Data), options);
 					const resultsArray = [];
@@ -49,23 +46,6 @@ const Search = () => {
 						resultsArray.push(s.item)
 					);
 					setbusStops(resultsArray);
-
-					// setbusStops(
-					// 	JSON.parse(res[0].Data)
-					// 		.filter(
-					// 			(busstop) =>
-					// 				busstop.Description.toLowerCase().includes(
-					// 					search
-					// 				) ||
-					// 				busstop.RoadName.toLowerCase().includes(
-					// 					search
-					// 				) ||
-					// 				busstop.BusStopCode.toLowerCase().includes(
-					// 					search
-					// 				)
-					// 		)
-					// 		.slice(0, limitResults)
-					// );
 
 					ToastAndroid.show("Search completed.", ToastAndroid.SHORT);
 				} else {
@@ -106,24 +86,6 @@ const Search = () => {
 								resultsArray.push(s.item)
 							);
 							setbusStops(resultsArray);
-
-							// var results = arrayOfBusStops
-							// 	.filter(
-							// 		(busstop) =>
-							// 			busstop.Description.toLowerCase().includes(
-							// 				search
-							// 			) ||
-							// 			busstop.RoadName.toLowerCase().includes(
-							// 				search
-							// 			) ||
-							// 			busstop.BusStopCode.toLowerCase().includes(
-							// 				search
-							// 			)
-							// 	)
-							// 	.slice(0, limitResults);
-
-							// console.log("Result size: " + results.length);
-							// setbusStops(results);
 						})
 						.catch((err) => console.log(err))
 						.then(() => {
