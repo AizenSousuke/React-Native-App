@@ -117,7 +117,7 @@ const Search = () => {
 				<SearchBar
 					placeholder={"Search for a bus stop"}
 					onChangeText={(value) => {
-						console.log("Value: " + value);
+						// console.log("Value: " + value);
 						updateSearch(value);
 					}}
 					onSubmitEditing={() => {

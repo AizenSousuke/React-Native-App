@@ -81,7 +81,7 @@ const BusDetails = ({ busNumber, details }) => {
 							</Text>
 						</>
 					) : (
-						<Text style={styles.noData}>No data</Text>
+						<Text style={styles.noData}>No Data</Text>
 					)}
 				</View>
 				<View style={{ flexDirection: "column" }}>
@@ -104,7 +104,7 @@ const BusDetails = ({ busNumber, details }) => {
 							</Text>
 						</>
 					) : (
-						<Text style={styles.noData}>No data</Text>
+						<Text style={styles.noData}>No Data</Text>
 					)}
 				</View>
 				<View style={{ flexDirection: "column" }}>
@@ -127,7 +127,7 @@ const BusDetails = ({ busNumber, details }) => {
 							</Text>
 						</>
 					) : (
-						<Text style={styles.noData}>No data</Text>
+						<Text style={styles.noData}>No Data</Text>
 					)}
 				</View>
 			</View>

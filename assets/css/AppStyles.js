@@ -79,10 +79,11 @@ export default StyleSheet.create({
 		// flex: 1,
 		flexDirection: "row",
 		backgroundColor: "white",
-		padding: 20,
+		padding: 5,
 	},
 	busNumber: {
-		paddingRight: 5,
+		alignSelf: "center",
+		textAlign: "center",
 		color: "black",
 		fontWeight: "bold",
 	},
