@@ -8,6 +8,13 @@ import * as SQLite from "expo-sqlite";
 const databaseName = "sgbus.db";
 /**
  * Store user settings here
+ * 
+ * Should store the Going Out List and the Going Home List in 2 entries
+ * For future use, the going out list can be a list of list (with the bus services saved)
+ * I.e,
+ * [{
+ * 		"busStop": ["service_966", "service_911"]
+ * }]
  */
 const settingsDatabaseName = "settings.db";
 /**

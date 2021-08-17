@@ -103,12 +103,16 @@ export default class BusStopListPureComponent extends PureComponent {
 										</ListItem>
 										<ListItem
 											onPress={() => {
-												this.setState((state) => ({
-													overlayVisible:
-														!state.overlayVisible,
-												}));
-												console.log(
-													"Adding to Going Out List"
+												this.setState(
+													(state) => ({
+														overlayVisible:
+															!state.overlayVisible,
+													}),
+													() => {
+														console.log(
+															"Adding to Going Out List"
+														);
+													}
 												);
 											}}
 										>
@@ -118,12 +122,16 @@ export default class BusStopListPureComponent extends PureComponent {
 										</ListItem>
 										<ListItem
 											onPress={() => {
-												this.setState((state) => ({
-													overlayVisible:
-														!state.overlayVisible,
-												}));
-												console.log(
-													"Adding to Going Home List"
+												this.setState(
+													(state) => ({
+														overlayVisible:
+															!state.overlayVisible,
+													}),
+													() => {
+														console.log(
+															"Adding to Going Home List"
+														);
+													}
 												);
 											}}
 										>
