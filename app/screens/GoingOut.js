@@ -8,6 +8,7 @@ import {
 	getData,
 	getLastUpdatedDate,
 	storeData,
+	DeleteTable
 } from "../api/api";
 import BusStopListPureComponent from "../components/BusStopListPureComponent";
 
@@ -50,7 +51,7 @@ const GoingOut = () => {
 			/>
 			<Button
 				title="Get data"
-				onPress={() => getData().then((res) => setSampleText(JSON.stringify(res)))}
+				onPress={() => getData().then((res) => setSampleText(JSON.stringify(res)), (err) => setSampleText("Error getting data"))}
 			/>
 			<Button
 				title="Check DB Table"
@@ -62,6 +63,7 @@ const GoingOut = () => {
 			/>
 			<Button title="Store data" onPress={() => storeData("Lorem ipsum")} />
 			<Button title="Delete data" onPress={() => DeleteBusStopList().then((() => setSampleText("Deleted data")), () => setSampleText("Error"))} />
+			<Button title="Delete table" onPress={() => DeleteTable("BusStopList").then(() => setSampleText("Deleted tables"))} />
 		</ScrollView>
 	);
 };

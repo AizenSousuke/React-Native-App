@@ -3,15 +3,25 @@ import axios from "axios";
 import * as SQLite from "expo-sqlite";
 
 /**
+ * Strings for use in SQL
+ */
+const dataKey = {
+	BusStopList: "BusStopList",
+	Settings: "Settings",
+	GoingOut: "GoingOut",
+	GoingBack: "GoingBack",
+};
+/**
  * Store the bus stops here
  */
 const databaseName = "sgbus.db";
 /**
  * Store user settings here
- * 
+ *
  * Should store the Going Out List and the Going Home List in 2 entries
  * For future use, the going out list can be a list of list (with the bus services saved)
  * I.e,
+ * Going Out
  * [{
  * 		"busStop": ["service_966", "service_911"]
  * }]
@@ -31,10 +41,6 @@ const header = {
 var BusArrivalURL =
 	"http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2";
 var BusStopsURL = "http://datamall2.mytransport.sg/ltaodataservice/BusStops";
-const dataKey = {
-	GoingOut: "GoingOut",
-	GoingBack: "GoingBack",
-};
 
 var db = SQLite.openDatabase(databaseName);
 
@@ -83,28 +89,20 @@ export const BusStopTableCheck = () => {
 		db.transaction((tx) => {
 			tx.executeSql(
 				`
-				CREATE TABLE IF NOT EXISTS BusStopList (
-					Id INTEGER PRIMARY KEY AUTOINCREMENT,
-					Data nvarchar(255) NULL,
-					LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
-				);
-	
-				-- insert into BusStopList (Id, Data, LastUpdated) values (1, 'data', CURRENT_TIMESTAMP);
-	
+					CREATE TABLE IF NOT EXISTS ${dataKey.BusStopList} (
+						Id INTEGER PRIMARY KEY AUTOINCREMENT,
+						Data nvarchar NULL,
+						LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
+					);
 				`,
 				[],
 				(res, result) => {
-					// console.log("Success: %s", result);
 					tx.executeSql(
 						`
-						SELECT * FROM BusStopList;
+						SELECT * FROM ${dataKey.BusStopList};
 					`,
 						[],
 						(res, result) => {
-							// result.rows._array.forEach((item) => {
-							// 	console.log("Items: %s", item);
-							// });
-
 							resolve(
 								JSON.stringify(result.rows._array, null, "\t")
 							);
@@ -122,6 +120,53 @@ export const BusStopTableCheck = () => {
 			);
 		});
 	});
+};
+
+export const settingsTableCheck = () => {
+	return new Promise((resolve, reject) => {
+		db.transaction((tx) => {
+			tx.executeSql(
+				`
+				CREATE TABLE IF NOT EXISTS ${dataKey.Settings} (
+					Id INTEGER PRIMARY KEY,
+					Data nvarchar NULL,
+					LastUpdated datetime2 DEFAULT CURRENT_TIMESTAMP
+				);
+			`,
+				[],
+				(res, result) => {},
+				(err) => {
+					console.error("Error: %s", err);
+					reject(null);
+				}
+			);
+		});
+	});
+};
+
+export const DeleteTable = (value) => {
+	try {
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					`
+					DROP TABLE IF EXISTS ${value ?? dataKey.BusStopList}
+					`,
+					[],
+					(res, result) => {
+						console.log("Deleted table: %s", value);
+						resolve(true);
+					},
+					(err, result) => {
+						console.error(result.message);
+						reject(false);
+					}
+				);
+			});
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 /**
@@ -142,7 +187,7 @@ export const storeData = (value) => {
 
 					tx.executeSql(
 						`
-						INSERT INTO BusStopList (
+						INSERT INTO ${dataKey.BusStopList} (
 							Data
 						) VALUES (
 							?
@@ -183,7 +228,7 @@ export const getData = (value = null) => {
 						console.log("Value provided is null");
 						tx.executeSql(
 							`
-							SELECT Data FROM BusStopList;
+							SELECT Data FROM ${dataKey.BusStopList};
 						`,
 							[],
 							(tx, res) => {
@@ -197,7 +242,7 @@ export const getData = (value = null) => {
 					} else {
 						tx.executeSql(
 							`
-							SELECT Data FROM BusStopList
+							SELECT Data FROM ${dataKey.BusStopList}
 							WHERE 
 								Data LIKE '%' + ? + '%';
 						`,
@@ -224,6 +269,7 @@ export const getData = (value = null) => {
 					console.error(
 						"Error in getting data from SQLite " + err.message
 					);
+					reject(null);
 				},
 				() => {
 					console.log("Successfully read data from SQLite");
@@ -247,7 +293,7 @@ export const getLastUpdatedDate = () => {
 					tx.executeSql(
 						`
 							SELECT LastUpdated 
-							FROM BusStopList
+							FROM ${dataKey.BusStopList}
 							ORDER BY LastUpdated DESC
 						`,
 						[],
@@ -292,7 +338,7 @@ export const DeleteBusStopList = () => {
 			db.transaction((tx) =>
 				tx.executeSql(
 					`
-					DELETE FROM BusStopList WHERE Data NOT NULL
+					DELETE FROM ${dataKey.BusStopList} WHERE Data NOT NULL
 					`,
 					[],
 					(res) => {
