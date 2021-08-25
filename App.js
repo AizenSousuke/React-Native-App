@@ -1,33 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import { View } from "react-native";
-import { Header } from "react-native-elements";
-import SearchButton from "./app/components/SearchButton";
-import TabNavigator from "./app/components/TabNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
 import Search from "./app/screens/Search";
+import Home from "./app/screens/Home";
 
 const Stack = createStackNavigator();
-
-const Home = ({ navigation }) => {
-	return (
-		<View style={{ flex: 1 }}>
-			<Header
-				placement={"center"}
-				centerComponent={{
-					text: "Yet Another SG Bus App",
-					style: { color: "white", fontSize: 18 },
-				}}
-			/>
-			<TabNavigator />
-			<SearchButton
-				onPress={() => {
-					navigation.navigate("Search");
-				}}
-			/>
-		</View>
-	);
-};
 
 export default function App() {
 	return (
