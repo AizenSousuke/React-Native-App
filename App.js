@@ -9,6 +9,7 @@ import Search from "./app/screens/Search";
 
 const Stack = createStackNavigator();
 
+/// Don't move or it will cause issues with Tab Navigator
 const Home = ({ navigation }) => {
 	return (
 		<View style={{ flex: 1 }}>

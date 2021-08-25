@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../screens/Home";
+import GoingHome from "../screens/GoingHome";
 import { Icon } from "react-native-elements";
 import GoingOut from "../screens/GoingOut";
 import SearchButton from "./SearchButton";
@@ -28,7 +28,7 @@ function TabNavigator() {
 			></Tab.Screen>
 			<Tab.Screen
 				name="Going Home"
-				component={Home}
+				component={GoingHome}
 				options={{
 					tabBarIcon: () => {
 						return <Icon name="home" />;
