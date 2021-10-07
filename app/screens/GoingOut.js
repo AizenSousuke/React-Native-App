@@ -8,11 +8,11 @@ import {
 	getData,
 	getLastUpdatedDate,
 	storeData,
-	DeleteTable
+	DeleteTable,
 } from "../api/api";
 import BusStopListPureComponent from "../components/BusStopListPureComponent";
 
-const GoingOut = () => {
+export default function GoingOut () {
 	const [refreshing, setRefreshing] = useState(false);
 	const [sampleText, setSampleText] = useState(
 		"Amet quis esse ad do reprehenderit ad qui commodo reprehenderit sint ex ullamco exercitation elit."
@@ -23,17 +23,7 @@ const GoingOut = () => {
 			refreshControl={
 				<RefreshControl
 					refreshing={refreshing}
-					onRefresh={() => {
-						// setRefreshing(true);
-						// getData()
-						// 	.then((data) => {
-						// 		console.log("Data: " + JSON.stringify(data));
-						// 		setSampleText(JSON.stringify(data));
-						// 		console.log("Refreshed");
-						// 		setRefreshing(false);
-						// 	})
-						// 	.catch((error) => console.log(error));
-					}}
+					onRefresh={() => {}}
 				></RefreshControl>
 			}
 		>
@@ -42,7 +32,6 @@ const GoingOut = () => {
 			) : (
 				<Text>No Data: {sampleText}</Text>
 			)}
-			{/* <BusStopListPureComponent /> */}
 			<Button
 				title="Get last updated date"
 				onPress={() =>
@@ -51,7 +40,12 @@ const GoingOut = () => {
 			/>
 			<Button
 				title="Get data"
-				onPress={() => getData().then((res) => setSampleText(JSON.stringify(res)), (err) => setSampleText("Error getting data"))}
+				onPress={() =>
+					getData().then(
+						(res) => setSampleText(JSON.stringify(res)),
+						(err) => setSampleText("Error getting data")
+					)
+				}
 			/>
 			<Button
 				title="Check DB Table"
@@ -61,11 +55,28 @@ const GoingOut = () => {
 					})
 				}
 			/>
-			<Button title="Store data" onPress={() => storeData("Lorem ipsum")} />
-			<Button title="Delete data" onPress={() => DeleteBusStopList().then((() => setSampleText("Deleted data")), () => setSampleText("Error"))} />
-			<Button title="Delete table" onPress={() => DeleteTable("BusStopList").then(() => setSampleText("Deleted tables"))} />
+			<Button
+				title="Store data"
+				onPress={() => storeData("Lorem ipsum")}
+			/>
+			<Button
+				title="Delete data"
+				onPress={() =>
+					DeleteBusStopList().then(
+						() => setSampleText("Deleted data"),
+						() => setSampleText("Error")
+					)
+				}
+			/>
+			<Button
+				title="Delete table"
+				onPress={() =>
+					DeleteTable("BusStopList").then(() =>
+						setSampleText("Deleted tables")
+					)
+				}
+			/>
+			<Text>Add some bus stops</Text>
 		</ScrollView>
 	);
 };
-
-export default GoingOut;
