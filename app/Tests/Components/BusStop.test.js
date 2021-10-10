@@ -65,8 +65,13 @@ describe("Going out", () => {
 		expect(busStop.toJSON().children.length).toEqual(2);
 	});
 
-	it("renders 2 bus details properly", () => {
+	it("renders 2 bus details properly as per snapshot", () => {
 		const busStop = render(<BusStop busStopData={data} />).toJSON();
 		expect(busStop).toMatchSnapshot();
+	});
+
+	it("renders no bus stops", async () => {
+		const { container, getByText } = render(<BusStop busStopData={null} />);
+		expect(getByText("No bus stop data found")).toBeTruthy();
 	});
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Going out renders 2 bus details properly 1`] = `
+exports[`Going out renders 2 bus details properly as per snapshot 1`] = `
 <View
   style={
     Object {

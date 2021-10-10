@@ -7,7 +7,7 @@ const BusStop = ({ busStopData }) => {
 	// console.log(JSON.stringify(busStopData.Services?.sort(a => a.ServiceNo)));
 	return (
 		<View style={styles.busStop}>
-			{busStopData.Services?.sort(a => a.ServiceNo).map((service, key) => {
+			{busStopData != null ? busStopData.Services?.sort(a => a.ServiceNo).map((service, key) => {
 				return (
 					<BusDetails
 						key={key}
@@ -15,7 +15,7 @@ const BusStop = ({ busStopData }) => {
 						details={service}
 					/>
 				);
-			})}
+			}) : <Text>No bus stop data found</Text>}
 		</View>
 	);
 };
