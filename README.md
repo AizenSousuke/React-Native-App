@@ -21,3 +21,6 @@ Uninstall react-native-elements and reinstalling them.
   - Store user data on their device (bus stop list and favourites)
 - Save the startup page accordingly in db settings
 - Location based bus stop search
+- Use an online DB like Mongo DB to store data and retrieve data instead
+  - Have a job on the db server to parse new data from LTA and massage it every week
+  - Locally store user's data and cached data from Mongo
